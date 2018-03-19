@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <!-- <img src="./assets/logo.png"> -->
-<!--     <i class="click-down" @click="rollDown"></i>
+<!--     <i class="click-down" v-on:click="rollDown"></i>
     <i class="click-up" @click="rollUp"></i> -->
     <router-view/>
   </div>
@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  name: 'App',
+  name: 'app',
   data(){
       return {
           state:''
@@ -17,7 +17,6 @@ export default {
   },
   methods:{
       rollDown:()=>{
-          console.log(this);
           this.state = 'roll-down';
       },
       rollUp:()=>{
@@ -50,10 +49,4 @@ html,body {
   height: 100%;
   width: 100%;
 }
-/*.click-down{
-  cursor: pointer;
-}
-#app.roll-down{
-  background-color: red;
-}*/
 </style>

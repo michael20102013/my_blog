@@ -8,7 +8,7 @@
   export default {
     data (){
         return {
-            title: `iwangcx'blog`,
+            title: `iWangcx's Blog`,
             welcomeTip: `为自己吹过的牛逼奋斗终生`
         }
     }
@@ -16,9 +16,9 @@
 </script>
 <style>
   .welcomeTip{
+    color: #fff;
     height: 200px;
     width: 750px;
-    background: red;
     position: absolute;
     top: 40%;
     left: 50%;

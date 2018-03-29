@@ -1,22 +1,25 @@
 <template>
-  <div id="app">
-    <div id="home_background" v-bind:class="[state]">
+  <div id="app" v-bind:class="[state]">
+    <div id="home_background">
       <welcomeTip></welcomeTip>
       <i class="click-down" @click="rollDown"></i>
     </div>
-    <div id="main_wrapper" style="overflow: hidden;background-color: red;height: 100%;width: 100%;">
-      <div id="header"></div>
+    <div id="main_wrapper">
+      <headerTemp></headerTemp>
       <div id="main">
-        <div id="nav"></div>
+        <navTemp></navTemp>
         <div id="content">
           <!-- <router-view/> -->
         </div>
       </div>
+      <i class="click-up" @click=rollUp></i>
     </div>    
   </div>
 </template>
 <script>
     import welcomeTip from './views/welcomeTip.vue'
+    import headerTemp from './views/header.vue'
+    import navTemp from './views/nav.vue'
     export default {
         data() {
             return {
@@ -32,32 +35,39 @@
             }                
         },
         components:{
-            welcomeTip
+            welcomeTip,
+            headerTemp,
+            navTemp
         }
     }
 </script>
-<style>
-*{
-  margin: 0;
-  padding: 0;
-}
-html,body {
- width: 100%;
- height: 100%;
- overflow: hidden;
- margin: 0;
- padding: 0;
- font-size: 30px;
-}
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-  /*margin-top: 60px;*/
-  height: 100%;
-  width: 100%;
-}
+<style lang="less">
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    html,body {
+     width: 100%;
+     height: 100%;
+     overflow: hidden;
+     margin: 0;
+     padding: 0;
+     font-size: 14px;
+    }
+    #app {
+      font-family: 'Avenir', Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      color: #2c3e50;
+      /*margin-top: 60px;*/
+      height: 100%;
+      width: 100%;
+      transition: all 0.8s linear;
+      #main{
+        width: 100%;
+        height: 100%;
+      }
+    }
     #home_background{
         height: 100%;
         width:100%;
@@ -68,11 +78,11 @@ html,body {
         position: relative;
         transition: all 0.8s linear;
     }
-    #home_background.roll-down{
+    #app.roll-down{
         transform: translate3d(0,-100%,0);
     }
-    #home_background.roll-up{
-        background-color: blue;
+    #app.roll-up{
+        transform: translate3d(0,-0,0);
     }    
     .click-down{
         position: absolute;
@@ -87,14 +97,20 @@ html,body {
         cursor: pointer;    
     }
     .click-up{
-      /*position: fixed;*/
-      display: block;
+      bottom:-90%;
+      right: 0;
+      position: fixed;
+      display: inline-block;
       height: 50px;
       width: 50px;
-      /*background-size: 100% 100%;*/
-      /*background-image: url(./assets/img/up_arrow.png);*/
-      background-color: red;
-      z-index: 9999;
+      background-size: 100% 100%;
+      background-image: url(./assets/img/up_arrow.png);
+      cursor: pointer;
+    }
+    #main_wrapper{
+      background-color: #ffffff;
+      height: 100%;
+      width: 100%;
     }
     @keyframes pull-down
     {

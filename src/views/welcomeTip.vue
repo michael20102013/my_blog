@@ -23,7 +23,8 @@
     top: 40%;
     left: 50%;
     text-align: center;
-    transform: translate(-50%,-50%); 
+    transform: translate(-50%,-50%);
+    font-size: 30px;
   }
   h1{
         display: block;

@@ -11,9 +11,14 @@
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "mock": "json-server --watch mock/db.json",
+    "mockdev": "concurrently \"npm run dev\" \"npm run mock\""
   },
   "dependencies": {
+    "concurrently": "^3.5.1",
+    "less": "^3.0.1",
+    "less-loader": "^4.1.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },

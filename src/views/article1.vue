@@ -1,11 +1,13 @@
 <template>
-  <div>dashboard</div>
+  <div id="article1">
+      fgadsfaffds
+  </div>
 </template>
 <script>
 export default {
   data(){
       return{
-
+          
       }
   }
 }

@@ -1,11 +1,11 @@
 <template>
     <div id="nav">
         <ul>
-            <li class= "nav-li" v-for="(nav,key,index) in navs">
-                <span :class="['nav-span',{'nav-span-active':nav.active}]" @click='changeState(key)'>{{nav.name}}</span>
+            <li class= "nav-li" v-for="(nav,navkey,index) in navs">
+                <span :class="['nav-span']" @click='changeState(navkey)'>{{nav.name}}</span>
                 <transition-group name="nav" tag="p">
-                    <ul class="nav-ul" :key = "key" v-show="!nav.hide">
-                        <li v-for = "(subNav,key,index) in nav.subMenu">{{subNav.name}}</li>
+                    <ul class="nav-ul" :key = "navkey" v-show="!nav.hide">
+                        <li v-for = "(subNav,subMenukey,index) in nav.subMenu" @click="changeAstate(navkey,subMenukey)"><router-link :to="subNav.url" :class="[{active:subNav.active}]">{{subNav.name}}</router-link></li>
                     </ul>
                 </transition-group>
             </li>
@@ -24,7 +24,9 @@
                 this.navs = res.data;
                 this.navs.forEach((item,index,array)=>{
                     item.hide = true;
-                    item.active = false;
+                    item.subMenu.forEach((item,index,array)=>{
+                        item.active = false;
+                    })
                 })
             })
             .catch((err)=>{
@@ -35,34 +37,59 @@
             changeState(key){
                 let obj = this;
                 obj.navs[key].hide = !obj.navs[key].hide;
-                obj.navs[key].active = !obj.navs[key].active;
                 if(obj.navs[key].hide === false){
                     obj.navs.forEach((item,index,array)=>{
                         if(index !== key){
                             item.hide = true;
-                            item.active = false;
                         }
                     })
                 }
                 //用这种方法才能由数组触发更新
                 obj.$set(obj.navs,key,obj.navs[key]);
+            },
+            changeAstate(navkey,subMenukey){
+                console.log("click");
+                let obj = this;
+                obj.navs[navkey].subMenu[subMenukey].active = !obj.navs[navkey].subMenu[subMenukey].active;
+                if(obj.navs[navkey].subMenu[subMenukey].active === true){
+                    obj.navs.forEach((item,index,array)=>{
+                        item.subMenu.forEach((item,index,array)=>{
+                            if(subMenukey !== index)
+                            {
+                                item.active = false;
+                            }
+                        })
+                    })
+                }
+                obj.$set(obj.navs,navkey,obj.navs[navkey]);
             }
         }
     }
 </script>
 <style lang="less" scoped>
     #nav{
-        width: 100px;
+        width: 160px;
         background-color: #25282a;
         height: 100%;
         color: #fff;
         text-align: center;
         line-height: 40px;
+        float: left;
+        a{
+            text-decoration:none;
+            outline: none;
+            color: #fff;
+            
+        }
         .nav-span{
             cursor: pointer;
         }
         .nav-ul{
             overflow: hidden;
+            background-color:#333333;
+            .active{
+                color: #0099CC;
+            }
         }
         .nav-span{
             display: block;

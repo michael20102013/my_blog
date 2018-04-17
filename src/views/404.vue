@@ -1,13 +1,13 @@
 <template>
-  <div>dashboard</div>
+  <div>404</div>
 </template>
 <script>
 export default {
-  data(){
-      return{
+    data(){
+        return{
 
-      }
-  }
+        }
+    }
 }
 </script>
 <style lang="less">

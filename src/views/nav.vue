@@ -23,9 +23,22 @@
             this.$http.get('http://localhost:3000/navs').then((res)=>{
                 this.navs = res.data;
                 this.navs.forEach((item,index,array)=>{
-                    item.hide = true;
+                    if(index === 0)
+                    {
+                        item.hide = false;
+                    }
+                    else
+                    {
+                        item.hide = true;
+                    }
                     item.subMenu.forEach((item,index,array)=>{
-                        item.active = false;
+                        if(index === 0)
+                        {
+                            item.active = true;
+                        }
+                        else{
+                            item.active = false;
+                        }
                     })
                 })
             })

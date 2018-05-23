@@ -1,6 +1,6 @@
 <template>
   <div id="article2">
-      wcxxxxxxxx
+      article2
   </div>
 </template>
 <script>

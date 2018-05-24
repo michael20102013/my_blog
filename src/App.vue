@@ -7,7 +7,67 @@
     <div id="main_wrapper">
       <headerTemp></headerTemp>
       <div id="main">
-        <navTemp></navTemp>
+    <div id="nav">
+      <el-row class="tac">
+      <el-col :span="3">
+      <el-menu
+        default-active="/article1"
+        class="el-menu-vertical-demo"
+        @open="handleOpen"
+        @close="handleClose"
+        background-color="#545c64"
+        text-color="#fff"
+        active-text-color="#ffd04b"
+        unique-opened
+        router>
+        <el-submenu index="1">
+          <template slot="title">
+            <i class="el-icon-edit"></i>
+            <span>学习笔记</span>
+          </template>
+          <el-menu-item-group>
+            <!-- <template slot="title">分组一</template> -->
+            <el-menu-item index="/article1">选项1</el-menu-item>
+            <el-menu-item index="/article2">选项2</el-menu-item>
+          </el-menu-item-group>
+          <!-- <el-menu-item-group title="分组2"> -->
+            <el-menu-item index="1-3">选项3</el-menu-item>
+          </el-menu-item-group>
+          <el-submenu index="1-4">
+            <template slot="title">选项4</template>
+            <el-menu-item index="1-4-1">选项1</el-menu-item>
+          </el-submenu>
+          <el-submenu index="1-5">
+            <template slot="title">选项5</template>
+            <el-menu-item index="1-5-1">选项1</el-menu-item>
+          </el-submenu>        
+        </el-submenu>
+        <el-submenu index="2">
+          <template slot="title">
+            <i class="el-icon-service"></i>
+            <span>娱乐与生活</span>
+          </template>
+          <el-menu-item-group>
+            <!-- <template slot="title">分组一</template> -->
+            <el-menu-item index="2-1">选项1</el-menu-item>
+            <el-menu-item index="2-2">选项2</el-menu-item>
+          </el-menu-item-group>
+          <!-- <el-menu-item-group title="分组2"> -->
+            <el-menu-item index="2-3">选项3</el-menu-item>
+          </el-menu-item-group>
+          <el-submenu index="2-4">
+            <template slot="title">选项4</template>
+            <el-menu-item index="2-4-1">选项1</el-menu-item>
+          </el-submenu>
+          <el-submenu index="2-5">
+            <template slot="title">选项5</template>
+            <el-menu-item index="2-5-1">选项1</el-menu-item>
+          </el-submenu>        
+        </el-submenu>
+      </el-menu>
+      </el-col>
+      </el-row>             
+    </div>
         <div id="content">
           <router-view/>
         </div>
@@ -19,7 +79,6 @@
 <script>
     import welcomeTip from './views/welcomeTip.vue'
     import headerTemp from './views/header.vue'
-    import navTemp from './views/nav.vue'
     export default {
         data() {
             return {
@@ -32,12 +91,17 @@
             },
             rollUp() {
                 this.state = 'roll-up';
-            }                         
+            },
+            handleOpen(key, keyPath) {
+              console.log(key, keyPath);
+            },
+            handleClose(key, keyPath) {
+              console.log(key, keyPath);
+            }                                    
         },
         components:{
             welcomeTip,
-            headerTemp,
-            navTemp
+            headerTemp
         }
     }
 </script>
@@ -117,4 +181,17 @@
         from {transform: translate(-50%,-50%);}
         to {transform: translate(-50%,0%);}
     }
+    #nav{
+        height: 100%;
+        background-color: #545c64;
+        width: 13%;
+        float: left;
+        /*border-right: solid 1px #e6e6e6;*/
+    }
+    .el-col-3{
+        width: 100%;
+    }
+    .el-menu{
+        border-right: none;
+    }    
 </style>

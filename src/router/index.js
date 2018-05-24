@@ -20,11 +20,11 @@ export default new Router({
       path: '/article1',
       name: 'article1',
       component: article1
-    },
+    },    
     {
       path: '/article2',
       name: 'article2',
       component: article2
-    }        
+    }       
   ]
 })

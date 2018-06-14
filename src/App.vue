@@ -185,8 +185,9 @@
         height: 100%;
         background-color: #545c64;
         width: 13%;
+        min-width: 200px;
         float: left;
-        /*border-right: solid 1px #e6e6e6;*/
+        border-right: solid 1px #e6e6e6;
     }
     .el-col-3{
         width: 100%;

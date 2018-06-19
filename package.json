@@ -13,7 +13,7 @@
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
     "build": "node build/build.js",
     "mock": "json-server --watch mock/db.json -p 3003",
-    "mockdev": "concurrently \"npm run dev --open\" \"npm run mock\""
+    "mockdev": "concurrently \"npm run dev --open\" \"npm run mock\" \"node app.js\""
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -27,6 +27,7 @@
     "koa-router": "^7.4.0",
     "less": "^3.0.1",
     "less-loader": "^4.1.0",
+    "mongoose": "^5.1.5",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },

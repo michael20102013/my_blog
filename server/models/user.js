@@ -1,9 +1,10 @@
+const mongoose = require('mongoose');
 const userScheam = require('../schema/user.js');
 const db = require('../config/db.js');
+const _model = mongoose.model('_model', userScheam);
 
 class UserModel {
     //模型化用户表
-    const _model = mongoose.model('_model', userScheam);
     /**
      * 创建一条user数据
      * @param data

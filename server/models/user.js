@@ -26,15 +26,14 @@ class UserModel {
      * @returns {Promise.<boolean>}
      */
     static async queryUser (name) {
-      await _model.find({name}, function(err, docs) {
-            if(err){
-                console.log(err);
-            }else{
-                return docs;
-            }
-      })
+        return await _model.find({name:name}, function(err, docs) {
+              if(err){
+                  console.log(err);
+              }else{
+                  return docs;
+              }
+        });
     }    
 }
-module.exports = {
-    UserModel
-}
+module.exports = UserModel
+

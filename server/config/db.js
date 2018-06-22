@@ -1,10 +1,7 @@
 const mongoose = require('mongoose');
 const url = 'mongodb://localhost/wcx2020';
 const db = mongoose.connection;
-module.exports = {
-  db
-}
-
+mongoose.connect(url);
 db.on('connected', function(err){
 	if(err){
 		console.log('数据库连接失败' + err);
@@ -12,3 +9,4 @@ db.on('connected', function(err){
 		console.log('数据库成功连接到 :' + url);
 	}
 })
+module.exports = db

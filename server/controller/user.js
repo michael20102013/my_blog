@@ -1,14 +1,17 @@
-const userModel = require('../models/user.js');
+const UserModel = require('../models/user.js');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
-class userController {
+class UserController {
 	static async postLogin (ctx) {
 		const data = ctx.request.body
 		//查询用户
-		const user = await userModel.queryUser(data.name);
+		const user = await UserModel.queryUser(data.name);
+		console.log(data.password, user.password);
+		console.log(ctx);
 		if(user) {
 			if(bcrypt.compareSync(data.password, user.password)) {
+				console.log('chenggong');
 				//用户 token
 				const userToken = {
 					name: user.name,
@@ -25,6 +28,7 @@ class userController {
 				}
 			}
 			else {
+				console.log('用户名和密码错误');
 				ctx.body = {
 					code: 1,
 					message: '用户名和密码错误'
@@ -39,3 +43,4 @@ class userController {
 		}
 	}
 }
+module.exports = UserController

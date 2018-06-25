@@ -9,8 +9,6 @@ const app = new Koa();
 
 
 console.log(jwt({}).unless);
-const err = require('./server/middleware/err.js');
-const app = new Koa();
 console.log(err);
 app.use(err());
 app.use(logger());

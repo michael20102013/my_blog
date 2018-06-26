@@ -4,11 +4,13 @@ const bcrypt = require('bcryptjs');
 
 class UserController {
 	static async postLogin (ctx) {
-		const data = ctx.request.body
+		console.log('passed verify')
+		const data = ctx.request.header
 		//查询用户
 		const user = await UserModel.queryUser(data.name);
-		console.log(data.password, user.password);
-		console.log(ctx);
+		console.log(data.password, user[0].password);
+		console.log('user', user);
+		console.log('ctx', ctx);
 		if(user) {
 			if(bcrypt.compareSync(data.password, user.password)) {
 				console.log('chenggong');

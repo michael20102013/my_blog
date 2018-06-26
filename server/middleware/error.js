@@ -7,11 +7,11 @@ const verify = util.promisify(jwt.verify);
  * 判断token是否可用
  */
 module.exports = function () {
+    console.log('passing')
     return async function (ctx, next) {
         try{
             // 获取jwt
             const token = ctx.header.authorization;
-            console.log(123);
             if(token)
             {
                 try{

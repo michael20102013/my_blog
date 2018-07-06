@@ -11,12 +11,14 @@ module.exports = function () {
     return async function (ctx, next) {
         try{
             // 获取jwt
-            const token = ctx.header.authorization;
+            const token = ctx.header.Authorization;
+            console.log('token', token);
             if(token)
             {
                 try{
                     // 解密payload， 获取用户名和ID
-                    let payload = await verify(token.split(' ')[1], secret);
+                    let payload = await verify(token, secret.sign);
+                    console.log('errorPayload', payload)
                     ctx.user = {
                         name: payload.name
                     }

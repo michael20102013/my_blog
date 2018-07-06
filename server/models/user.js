@@ -27,7 +27,7 @@ class UserModel {
      */
     static async queryUser (name) {
       console.log('entering db')
-        return await _model.find({name:'wcx'}, function(err, docs) {
+        return await _model.find({name:name}, function(err, docs) {
               if(err){
                   console.log(err);
               }else{

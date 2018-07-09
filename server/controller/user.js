@@ -12,6 +12,8 @@ class UserController {
 		//查询用户
 		let user = await UserModel.queryUser(data.name);
 		user = user[0];
+		//转化成json对象
+		console.log('user', user)
 		let strUser = JSON.stringify(user);
 		let jsonUsesr = JSON.parse(strUser)
 		if(user) {

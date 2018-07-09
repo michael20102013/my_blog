@@ -12,6 +12,13 @@ const portfinder = require('portfinder')
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
+//mock数据
+const express = require('express');
+const app = express();
+const Router = express.Router();
+const mock = require('../mock/mock.js');
+mock(Router);
+//mock数据
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -42,6 +49,9 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     quiet: true, // necessary for FriendlyErrorsPlugin
     watchOptions: {
       poll: config.dev.poll,
+    },
+    before(app){
+      app.use('/mock',Router);
     }
   },
   plugins: [

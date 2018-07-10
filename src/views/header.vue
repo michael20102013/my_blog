@@ -2,9 +2,10 @@
 	<div id="header">
 		<ul>
 			<li>博客数</li>			
-			<li v-show="no_login" @click="login" class="loginBtn">登录</li>
+			<li v-show="no_login" @click="login" class="loginBtn">
+				<el-button type="text" @click="dialogVisible = true">登录</el-button>				
+			</li>
 			<li><span v-if="no_login"></span><span v-else>用户</span></li>
-			<el-button type="text" @click="dialogVisible = true">点击打开 Dialog</el-button>
 
 			<el-dialog
 			title="提示"
@@ -69,6 +70,9 @@
 			}
 		}
 		.loginBtn{
+			span{
+				color:#fff !important;
+			}
 			cursor:pointer;
 			&:hover{
 				color:#00C1DE

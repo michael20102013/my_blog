@@ -4,7 +4,7 @@
       <div class="welcomeTip">
         <h1>{{title}}</h1>
         <h3>{{welcomeTip}}</h3>
-        <h2 class="jump">jump</h2>
+        <h2 class="jump" @click="hideHome">jump</h2>
       </div>      
       <i class="click-down" @click="rollDown" style="display:none"></i>
     </div>
@@ -104,8 +104,8 @@
             handleClose(key, keyPath) {
               console.log(key, keyPath);
             },
-            jump(){
-              console.log(123);
+            hideHome(){
+              this.state = 'hide';
             }
         },
         components:{
@@ -130,8 +130,11 @@
     .hide{
       display: none;
     }
-    #jump span{
-      cursor:pointer
+    .jump{
+      cursor:pointer;
+      &:hover {
+        color: #00C1DE;
+      }
     }
     #app {
       font-family: 'Avenir', Helvetica, Arial, sans-serif;

@@ -1,73 +1,77 @@
 <template>
-  <div id="app" v-bind:class="[state]">
-    <div id="home_background">
-      <welcomeTip></welcomeTip>
-      <i class="click-down" @click="rollDown"></i>
+  <div id="app">
+    <div id="home_background" v-bind:class="[state]">
+      <div class="welcomeTip">
+        <h1>{{title}}</h1>
+        <h3>{{welcomeTip}}</h3>
+        <h2 class="jump">jump</h2>
+      </div>      
+      <i class="click-down" @click="rollDown" style="display:none"></i>
     </div>
     <div id="main_wrapper">
       <headerTemp></headerTemp>
       <div id="main">
-    <div id="nav">
-      <el-row class="tac">
-      <el-col :span="3">
-      <el-menu
-        default-active="/article1"
-        class="el-menu-vertical-demo"
-        @open="handleOpen"
-        @close="handleClose"
-        background-color="#545c64"
-        text-color="#fff"
-        active-text-color="#ffd04b"
-        unique-opened
-        router>
-        <el-submenu index="1">
-          <template slot="title">
-            <i class="el-icon-edit"></i>
-            <span>学习笔记</span>
-          </template>
-          <el-menu-item-group>
-            <!-- <template slot="title">分组一</template> -->
-            <el-menu-item index="/article1">选项1</el-menu-item>
-            <el-menu-item index="/article2">选项2</el-menu-item>
-          </el-menu-item-group>
-          <!-- <el-menu-item-group title="分组2"> -->
-            <el-menu-item index="1-3">选项3</el-menu-item>
-          </el-menu-item-group>
-          <el-submenu index="1-4">
-            <template slot="title">选项4</template>
-            <el-menu-item index="1-4-1">选项1</el-menu-item>
-          </el-submenu>
-          <el-submenu index="1-5">
-            <template slot="title">选项5</template>
-            <el-menu-item index="1-5-1">选项1</el-menu-item>
-          </el-submenu>        
-        </el-submenu>
-        <el-submenu index="2">
-          <template slot="title">
-            <i class="el-icon-service"></i>
-            <span>娱乐与生活</span>
-          </template>
-          <el-menu-item-group>
-            <!-- <template slot="title">分组一</template> -->
-            <el-menu-item index="2-1">选项1</el-menu-item>
-            <el-menu-item index="2-2">选项2</el-menu-item>
-          </el-menu-item-group>
-          <!-- <el-menu-item-group title="分组2"> -->
-            <el-menu-item index="2-3">选项3</el-menu-item>
-          </el-menu-item-group>
-          <el-submenu index="2-4">
-            <template slot="title">选项4</template>
-            <el-menu-item index="2-4-1">选项1</el-menu-item>
-          </el-submenu>
-          <el-submenu index="2-5">
-            <template slot="title">选项5</template>
-            <el-menu-item index="2-5-1">选项1</el-menu-item>
-          </el-submenu>        
-        </el-submenu>
-      </el-menu>
-      </el-col>
-      </el-row>             
-    </div>
+        <div id="nav">
+          <el-row class="tac">
+          <el-col :span="3">
+          <el-menu
+            default-active="/article1"
+            class="el-menu-vertical-demo"
+            @open="handleOpen"
+            @close="handleClose"
+            background-color="#545c64"
+            text-color="#fff"
+            active-text-color="#ffd04b"
+            unique-opened
+            router>
+            <el-submenu index="1">
+              <template slot="title">
+                <i class="el-icon-edit"></i>
+                <span>学习笔记</span>
+              </template>
+              <el-menu-item-group>
+                <!-- <template slot="title">分组一</template> -->
+                <el-menu-item index="/article1">选项1</el-menu-item>
+                <el-menu-item index="/article2">选项2</el-menu-item>
+              </el-menu-item-group>
+              <!-- <el-menu-item-group title="分组2"> -->
+                <el-menu-item index="1-3">选项3</el-menu-item>
+              </el-menu-item-group>
+              <el-submenu index="1-4">
+                <template slot="title">选项4</template>
+                <el-menu-item index="1-4-1">选项1</el-menu-item>
+              </el-submenu>
+              <el-submenu index="1-5">
+                <template slot="title">选项5</template>
+                <el-menu-item index="1-5-1">选项1</el-menu-item>
+              </el-submenu>        
+            </el-submenu>
+            <el-submenu index="2">
+              <template slot="title">
+                <i class="el-icon-service"></i>
+                <span>娱乐与生活</span>
+              </template>
+              <el-menu-item-group>
+                <!-- <template slot="title">分组一</template> -->
+                <el-menu-item index="2-1">选项1</el-menu-item>
+                <el-menu-item index="2-2">选项2</el-menu-item>
+              </el-menu-item-group>
+              <!-- <el-menu-item-group title="分组2"> -->
+                <el-menu-item index="2-3">选项3</el-menu-item>
+              </el-menu-item-group>
+              <el-submenu index="2-4">
+                <template slot="title">选项4</template>
+                <el-menu-item index="2-4-1">选项1</el-menu-item>
+              </el-submenu>
+              <el-submenu index="2-5">
+                <template slot="title">选项5</template>
+                <el-menu-item index="2-5-1">选项1</el-menu-item>
+              </el-submenu>        
+            </el-submenu>
+          </el-menu>
+          </el-col>
+          </el-row>             
+        </div>
         <div id="content">
           <router-view/>
         </div>
@@ -82,7 +86,9 @@
     export default {
         data() {
             return {
-                state:'wcx'
+                state:"wcx",
+                title: "iWangcx's Blog",
+                welcomeTip: `为自己吹过的牛逼奋斗终生`                
             }
         },
         methods:{
@@ -97,7 +103,10 @@
             },
             handleClose(key, keyPath) {
               console.log(key, keyPath);
-            }                                    
+            },
+            jump(){
+              console.log(123);
+            }
         },
         components:{
             welcomeTip,
@@ -117,6 +126,12 @@
      margin: 0;
      padding: 0;
      font-size: 14px;
+    }
+    .hide{
+      display: none;
+    }
+    #jump span{
+      cursor:pointer
     }
     #app {
       font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -142,10 +157,10 @@
         position: relative;
         transition: all 0.8s linear;
     }
-    #app.roll-down{
+     #home_background.roll-down{
         transform: translate3d(0,-100%,0);
     }
-    #app.roll-up{
+     #home_background.roll-up{
         transform: translate3d(0,-0,0);
     }    
     .click-down{
@@ -194,5 +209,34 @@
     }
     .el-menu{
         border-right: none;
-    }    
+    }
+    .welcomeTip{
+      color: #fff;
+      height: 200px;
+      width: 750px;
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      text-align: center;
+      transform: translate(-50%,-50%);
+      font-size: 30px;
+    }
+    h1{
+          display: block;
+          font-size: 2em;
+          -webkit-margin-before: 0.67em;
+          -webkit-margin-after: 0.67em;
+          -webkit-margin-start: 0px;
+          -webkit-margin-end: 0px;
+          font-weight: bold;    
+    }
+    h3{
+          display: block;
+          font-size: 1.17em;
+          -webkit-margin-before: 1em;
+          -webkit-margin-after: 1em;
+          -webkit-margin-start: 0px;
+          -webkit-margin-end: 0px;
+          font-weight: bold;    
+    }
 </style>

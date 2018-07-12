@@ -10,6 +10,10 @@ import 'element-ui/lib/theme-chalk/index.css';
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios;
+Vue.http.options.emulateJSON = true;
+Vue.http.options.headers = {
+  'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+};
 Vue.use(ElementUI,{"size":'small'});
 /* eslint-disable no-new */
 new Vue({

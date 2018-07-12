@@ -10,9 +10,13 @@ module.exports = function () {
     console.log('passing')
     return async function (ctx, next) {
         try{
+            console.log('ctx',ctx);            
             // 获取jwt
-            const token = ctx.header.Authorization;
-            console.log('token', token);
+            let token = false;
+            if(ctx.header.Authorization){
+                token = ctx.header.Authorization;
+                console.log('token1', token);                
+            }else{}
             if(token)
             {
                 try{
@@ -27,7 +31,7 @@ module.exports = function () {
                     console.log(`token verify fail: `, err)
                 }
             }
-            console.log(`token: ${token}`);
+            console.log(`token2: ${token}`);
 
             await next();
         }

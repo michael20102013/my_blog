@@ -9,9 +9,10 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
 Vue.config.productionTip = false
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
 Vue.prototype.$http = axios;
-Vue.http.options.emulateJSON = true;
-Vue.http.options.headers = {
+// Vue.http.options.emulateJSON = true;
+Vue.prototype.$http.options.headers = {
   'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
 };
 Vue.use(ElementUI,{"size":'small'});

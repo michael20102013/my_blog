@@ -59,15 +59,18 @@
 						}).
 						then((res)=>{
 						let _res = res.data
-						if(_res.cc === 0){
+						if(res.cc === 401){
+							alert('登出失败')
+						}
+						else if(_res.cc === 0){
 							alert("登出成功");
 							this.islogin = false;
 							this.dialogFormVisible = false;	
-							this.loginUser = '登录';					
+							this.loginUser = '登录';
 						}
 						else{
-							this.dialogFormVisible = flase;	
-							alert("登录失败");
+							this.dialogFormVisible = false;	
+							alert("登出失败");
 						}
 
 					})
@@ -93,17 +96,7 @@
 							this.islogin = true;
 							this.dialogFormVisible = false;	
 							this.loginUser = _res.name;
-							this.$http.interceptors.request.use(
-								config =>{
-									if(token){
-										config.headers.token = `${token}`;
-									}else{}
-									return config
-								},
-								err =>{
-									return Promise.reject(err);
-								}
-							)					
+							this.addToken(token);					
 						}
 						else{
 							this.dialogFormVisible = false;	
@@ -128,7 +121,21 @@
 				}else{
 					this.loginText = '登录'
 				}
-			}
+			},
+			//在请求头上加上token
+			addToken(token){
+				this.$http.interceptors.request.use(
+					config =>{
+						if(token){
+							config.headers.token = `${token}`;
+						}else{}
+						return config
+					},
+					err =>{
+						return Promise.reject(err);
+					}
+				)				
+			}			
 		}
 	}
 </script>

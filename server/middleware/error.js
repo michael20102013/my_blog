@@ -10,7 +10,6 @@ module.exports = function () {
     console.log('passing')
     return async function (ctx, next) {
         try{
-            console.log('ctx',ctx);            
             // 获取jwt
             let token = false;
             if(ctx.header.Authorization){
@@ -38,7 +37,7 @@ module.exports = function () {
         catch(err){
             if(err.status === 401) {
                 ctx.body = {
-                    code: -1,
+                    cc: 401,
                     message: '认证失败'
                 }
             } else {

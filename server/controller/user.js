@@ -4,10 +4,9 @@ const bcrypt = require('bcryptjs');
 const secret = require('../config/secret.json');
 const util = require('util');
 const verify = util.promisify(jwt.verify);
+const common = require('../common/common.js')
 class UserController {
     static async postLogin (ctx) {
-		console.log('jwt2', jwt);
-        console.log('passed verify')
         const data = ctx.request.body;
         //查询用户
 		let user = await UserModel.queryUser(data.name);
@@ -17,26 +16,22 @@ class UserController {
 			//do nothing
 		}
         //转化成json对象
-        console.log('user', user)
         let strUser = JSON.stringify(user);
 		let jsonUsesr = JSON.parse(strUser);
-		console.log('pwd',data['password']);
-		console.log('pwd2',jsonUsesr.password);
         if(user) {
             // if(bcrypt.compareSync(data['password'], jsonUsesr.password)) {
             if(data['password']===jsonUsesr.password) {
-                console.log('chenggong');
                 //用户 token
                 const userToken = {
                     name: jsonUsesr.name,
                     id: user.id
                 }
-                console.log('userToken', userToken);
                 // 签发 token
                 const token = jwt.sign(userToken, secret.sign, {expiresIn: '2 days'})
+                //把token存储到数据库
+                UserModel.updateUser(token);
+                //解析token
                 let payload = await verify(token, secret.sign);
-                console.log('util2', util);
-                console.log('jwtpayload', payload)
                 ctx.body = {
                     name:userToken.name,
                     message: '成功',
@@ -48,7 +43,6 @@ class UserController {
                 }
             }
             else {
-                console.log('用户名和密码错误');
                 ctx.body = {
                     code: 1,
 					message: '用户名和密码错误',
@@ -63,11 +57,25 @@ class UserController {
             }
         }
     }
+    //登出
     static async loginOut (ctx) {
-		ctx.body = {
-			message:'登出成功'
-		}
-    }   
+        console.log('loginout');
+        let token = ctx.header.token;
+        if(common.verifyToken(ctx) === true){
+            if(UserModel.updateUser(token)){
+                ctx.body = {
+                    message:'登出成功',
+                    cc:0,
+                    token
+                }
+            }else{
+                //do nothing
+            }
+
+        }else{
+            throw(ctx.throw(401));
+        }
+    }  
     static async test(ctx){
         ctx.body = {
             message:"成功"

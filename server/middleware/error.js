@@ -36,6 +36,7 @@ module.exports = function () {
         }
         catch(err){
             if(err.status === 401) {
+                alert('该操作需要登录')
                 ctx.body = {
                     cc: 401,
                     message: '认证失败'

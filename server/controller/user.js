@@ -28,10 +28,17 @@ class UserController {
                 }
                 // 签发 token
                 const token = jwt.sign(userToken, secret.sign, {expiresIn: '2 days'})
+                let data = {'token':token};
                 //把token存储到数据库
-                UserModel.updateUser(token);
+                UserModel.updateUser(token,data);
                 //解析token
-                let payload = await verify(token, secret.sign);
+                // let payload = await verify(token, secret.sign);
+                this.$http.interceptor.request.use(
+                    config => {
+                        config.header.Authorization = token;
+                        return config
+                    } 
+                )
                 ctx.body = {
                     name:userToken.name,
                     message: '成功',
@@ -61,15 +68,20 @@ class UserController {
     static async loginOut (ctx) {
         console.log('loginout');
         let token = ctx.header.token;
+        let data = {token:"null"};
         if(common.verifyToken(ctx) === true){
-            if(UserModel.updateUser(token)){
+            if(UserModel.updateUser(token,data)){
                 ctx.body = {
                     message:'登出成功',
                     cc:0,
                     token
                 }
             }else{
-                //do nothing
+                ctx.body = {
+                    message:'登出失败',
+                    cc:1,
+                    token
+                }
             }
 
         }else{

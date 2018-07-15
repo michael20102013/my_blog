@@ -1,7 +1,11 @@
 const mongoose = require('mongoose');
 const userScheam = require('../schema/user.js');
 const db = require('../config/db.js');
-const _model = mongoose.model('_model', userScheam);
+const _models = mongoose.model('_models', userScheam);
+// const _models = mongoose.model('_models',mongoose.Schema({
+//     name:String,
+//     password:String
+// }))
 const secret = require('../config/secret.json');
 const jwt = require('jsonwebtoken');
 const util = require('util');
@@ -14,39 +18,56 @@ class UserModel {
      * @returns {Promise.<*>}
      */
     static async createUser (data) {
-      let example = new _model(data);
+      let example = new _models(data);
           await example.save(function(err, example) {
               if(err){
                   console.log('用户保存失败');
               }else{
+                  console.log(example)
                   console.log('用户保存成功')
               }      
       })
+
+    // const userSchema2 = mongoose.Schema({
+    //     name:String,
+    //     password:String
+    // });
+    // const modelTest = mongoose.model('modelTest', userSchema2);
+    // let _data = new _models({
+    //     name:'wcxTest2018'
+    // });
+    // // const unitiy = new modelTest(data);
+    // _data.save(function(err,docs){
+    //     if(err){
+    //         console.log(err)
+    //     }
+    //     else{
+    //         console.log(docs)
+    //     }
+    // })    
     }
     /**
      * 更新一条user数据
      * @param name
      * @returns {Promise.<boolean>}
      */
-    static async updateUser (token) {
+    static async updateUser (token,data) {
         console.log('wcx2222',token);
         let payload = await verify(token, secret.sign);
         let name = payload.name;
         let conditions = {name};
-        let update = {$set:{name:'wcx2'}};
-        _model.update({name:"wcx"}, {token:'wcx2'},function(err, docs){
+        let update = {$set:data};//要更新的数据
+        console.log('update', update);
+        _models.update(conditions, update, function(err, res){
             if(err){
                 console.log('err', err)
                 return false;
             }else{
+                console.log(res);
                 console.log(`update ${name} succcess`);
-                console.log(docs);
-                // _model.find(function(err, docs){
-                //     console.log(docs);
-                // });
                 return true;
             }
-        })     
+        })          
       }
     /**
      * 查询一条user数据
@@ -55,7 +76,7 @@ class UserModel {
      */
     static async queryUser (name) {
       console.log('entering db')
-        return await _model.find({name:name}, function(err, docs) {
+        return await _models.find({name:name}, function(err, docs) {
               if(err){
                   console.log(err);
               }else{

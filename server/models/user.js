@@ -19,12 +19,14 @@ class UserModel {
      */
     static async createUser (data) {
       let example = new _models(data);
-          await example.save(function(err, example) {
+          return await example.save(function(err, example) {
               if(err){
                   console.log('用户保存失败');
+                  return false
               }else{
                   console.log(example)
                   console.log('用户保存成功')
+                  return true
               }      
       })
 
@@ -58,7 +60,7 @@ class UserModel {
         let conditions = {name};
         let update = {$set:data};//要更新的数据
         console.log('update', update);
-        _models.update(conditions, update, function(err, res){
+        return await _models.update(conditions, update, function(err, res){
             if(err){
                 console.log('err', err)
                 return false;

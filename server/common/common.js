@@ -5,9 +5,8 @@ const verify = util.promisify(jwt.verify);
 const UserModel = require('../models/user.js');
  // 验证token
 let verifyToken = async (ctx)=>{
-     let token = ctx.header.token;
+     let token = ctx.request.header.authorization.split(' ')[1];
      let payload = await verify(token, secret.sign);
-     console.log('payload', payload)
      let user = await UserModel.queryUser(payload.name);
 	if(user[0]){
 		user = user[0];
@@ -15,10 +14,12 @@ let verifyToken = async (ctx)=>{
 		//do nothing
 	}
      //转化成json对象
-     console.log('user', user)
      let strUser = JSON.stringify(user);
      let dbUser = JSON.parse(strUser);
+     console.log('dbUser.token',dbUser.token);
+     console.log('token',token);
      if(dbUser.token === token){
+        console.log('相等')
          return true;
      }else{
          return false;

@@ -33,18 +33,10 @@ class UserController {
                 UserModel.updateUser(token,data);
                 //解析token
                 // let payload = await verify(token, secret.sign);
-                this.$http.interceptor.request.use(
-                    config => {
-                        config.header.Authorization = token;
-                        return config
-                    } 
-                )
                 ctx.body = {
                     name:userToken.name,
                     message: '成功',
-                    bean: {
-                        token
-                    },
+                    token,
                     code: 0,
                     cc:0
                 }
@@ -67,26 +59,50 @@ class UserController {
     //登出
     static async loginOut (ctx) {
         console.log('loginout');
-        let token = ctx.header.token;
+        let token = ctx.request.header.authorization.split(' ')[1];
         let data = {token:"null"};
-        if(common.verifyToken(ctx) === true){
-            if(UserModel.updateUser(token,data)){
+        console.log('verifyToken',common.verifyToken(ctx))
+        let verifyTk = await common.verifyToken(ctx);
+        console.log('verifyTk',verifyTk);
+        if(verifyTk === true){
+            let upTk = await UserModel.updateUser(token, data);
+            console.log('upTk',upTk)
+            if(upTk){
                 ctx.body = {
                     message:'登出成功',
                     cc:0,
-                    token
-                }
+                    token:data.token
+                }         
             }else{
                 ctx.body = {
                     message:'登出失败',
                     cc:1,
                     token
-                }
+                }                
             }
-
         }else{
             throw(ctx.throw(401));
         }
+
+        // common.verifyToken(ctx).then((res)=>{
+        //     if(res === true){
+        //         if(UserModel.updateUser(token,data)){
+        //             ctx.body = {
+        //                 message:'登出成功',
+        //                 cc:0,
+        //                 token
+        //             }
+        //         }else{
+        //             ctx.body = {
+        //                 message:'登出失败',
+        //                 cc:1,
+        //                 token
+        //             }
+        //         }
+        //     }else{
+        //         throw(ctx.throw(401));
+        //     }
+        // })
     }  
     static async test(ctx){
         ctx.body = {

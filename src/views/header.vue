@@ -90,13 +90,15 @@
 						// window.sessionStorage.setItem('token', token);
 						// console.log(window.sessionStorage.getItem('token'));
 						if(_res.cc === 0){
-							let token = _res.bean.token;							
+							let token = _res.token;							
 							let payload = jwt.verify(token, secret.sign);
 							alert("登录成功");
 							this.islogin = true;
 							this.dialogFormVisible = false;	
 							this.loginUser = _res.name;
-							this.addToken(token);					
+							token = 'Bearer ' + token;
+							console.log('loginTK',token);
+							this.addToken(token);	
 						}
 						else{
 							this.dialogFormVisible = false;	
@@ -124,17 +126,34 @@
 			},
 			//在请求头上加上token
 			addToken(token){
-				this.$http.interceptors.request.use(
+				console.log('enteraddtoken')
+				// let filterReq = (config)=>{
+				// 	return ()=> {
+				// 		if(token){
+				// 			config.headers.Authorization = `${token}`;
+				// 		}else{}
+				// 	}
+				// }
+				// if(myInterceptor){
+				// 	console.log('myInterceptor', myInterceptor);
+				// 	this.$http.interceptors.request.eject(myInterceptor);
+				// }
+				let myInterceptor  = this.$http.interceptors.request.use(
 					config =>{
 						if(token){
-							config.headers.token = `${token}`;
+							console.log('tokenhead', token);
+							config.headers.Authorization = `${token}`;
 						}else{}
 						return config
 					},
+					// filterReq(config),
 					err =>{
 						return Promise.reject(err);
 					}
-				)				
+				);
+				// if(){
+					this.$http.interceptors.request.eject(myInterceptor);	
+				// }
 			}			
 		}
 	}

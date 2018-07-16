@@ -126,34 +126,8 @@
 			},
 			//在请求头上加上token
 			addToken(token){
-				console.log('enteraddtoken')
-				// let filterReq = (config)=>{
-				// 	return ()=> {
-				// 		if(token){
-				// 			config.headers.Authorization = `${token}`;
-				// 		}else{}
-				// 	}
-				// }
-				// if(myInterceptor){
-				// 	console.log('myInterceptor', myInterceptor);
-				// 	this.$http.interceptors.request.eject(myInterceptor);
-				// }
-				let myInterceptor  = this.$http.interceptors.request.use(
-					config =>{
-						if(token){
-							console.log('tokenhead', token);
-							config.headers.Authorization = `${token}`;
-						}else{}
-						return config
-					},
-					// filterReq(config),
-					err =>{
-						return Promise.reject(err);
-					}
-				);
-				// if(){
-					this.$http.interceptors.request.eject(myInterceptor);	
-				// }
+				this.$http.defaults.headers.common['Authorization'] = token;
+				console.log('this.$http.interceptors.request',this.$http.defaults.headers.common['Authorization'])
 			}			
 		}
 	}

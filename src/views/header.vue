@@ -1,17 +1,26 @@
 <template>
-	<div id="header">
-		<ul>
-			<li>博客数</li>			
-			<li v-show="no_login">
-				<el-button type="text" @click="changeLoginStatus">
-					<span id="login">{{loginUser}}</span>
-				</el-button>				
-			</li>
-			<li><span v-if="no_login"></span><span v-else>用户</span></li>
-			<li class="logo">
-					<span>iWangcx</span>
+	<div id="header">	
+		<ul class="right">
+			<li>
+				<span class="writeText" @click="write">{{writeText}}</span>				
 			</li>			
+			<li v-show="no_login">
+				<span class="login" @click="changeLoginStatus">{{loginUser}}</span>
+			</li>
+			<li><span v-if="no_login"></span><span v-else>用户</span></li>		
 		</ul>
+		<div class="logo">
+			<span>iWangcx</span>
+		</div>		
+		<ul class="center">
+			<li><router-link to="/article1">首页</router-link></li>
+			<li><router-link to="/article2">技术</router-link></li>
+			<li><router-link to="/article3">专题</router-link></li>
+			<li><router-link to="/article4">作品</router-link></li>
+			<li><router-link to="/article5">文章</router-link></li>			
+			<li><router-link to="/article6">更多</router-link></li>			
+		</ul>					
+		<!-- 对话框组件-start -->
 		<el-row>
 				<el-col :span="12">
 						<el-dialog title="" :visible.sync="dialogFormVisible" width="20%" :center = 'true'>
@@ -28,7 +37,8 @@
 								</div>
 						</el-dialog>
 				</el-col>
-		</el-row>				
+		</el-row>
+		<!-- 对话框组件-end -->		
 	</div>
 </template>
 <script>
@@ -45,7 +55,10 @@
 				loginText:'登录',
 				islogin:false,
 				userName:'',
-				password:''
+				password:'',
+				activeIndex: '1',
+				activeIndex2: '1',
+				writeText:"写文章"			
 			}
 		},
 		methods: {
@@ -97,7 +110,6 @@
 							this.dialogFormVisible = false;	
 							this.loginUser = _res.name;
 							token = 'Bearer ' + token;
-							console.log('loginTK',token);
 							this.addToken(token);	
 						}
 						else{
@@ -108,6 +120,7 @@
 					})
 				}
 			},
+			//对话框关闭事件
 			handleClose(done) {
 				this.$confirm('确认关闭？')
 				.then(_ => {
@@ -127,18 +140,56 @@
 			//在请求头上加上token
 			addToken(token){
 				this.$http.defaults.headers.common['Authorization'] = token;
-				console.log('this.$http.interceptors.request',this.$http.defaults.headers.common['Authorization'])
+			},
+			//导航事件
+			handleSelect(key, keyPath) {
+				console.log(key, keyPath);
+			},
+			//写文章
+			write(){
+				if(this.islogin === false){
+					alert("请先登录")
+				}else{
+					console.log(this.$store.state.isContentShow)
+					let location = '/article2'
+					this.$router.push(location)
+					this.$store.commit('hideContent');
+					console.log(this.$store.state.isContentShow)
+				}
 			}			
 		}
 	}
 </script>
 <style lang="less" scoped>
+	.router-link-active {
+		text-decoration: none;
+	}
 	#header{
 		line-height: 50px;
 		font-family: Microsoft YaHei;
 		background-color: #32373b;
 		color: white;
 		height: 50px;
+		a{
+			text-decoration: none;
+			color:#fff; 
+		}
+		a:hover{
+			color:#00C1DE;
+		}		
+		.right{
+			float: right;
+		}
+		.center{
+			margin:auto;
+			width: 500px;
+			position: relative;
+			overflow: hidden;
+			li{
+				float: left;
+				position: relative;
+			}
+		}
 		ul{
 			overflow: hidden;
 			li{
@@ -147,13 +198,26 @@
 				list-style: none;
 			}
 		}
-		#login{
+		.login{
 			color:#fff;
 			font-size: 14px;
 			&:hover{
-				color:#00C1DE
+				color:#00C1DE;
+				cursor: pointer;
 			}			
 		}
+		.writeText{
+			color:#fff;
+			font-size: 14px;
+			&:hover{
+				color:#00C1DE;
+				cursor: pointer;
+			}			
+		}
+	}
+	.nav{
+		width: 800px;
+		min-width: 300px;;
 	}
 	.logo{
 		font-family: yahei;
@@ -161,6 +225,6 @@
 		font-size: 16px;
 		line-height: 50px;
 		margin-left: 50px;
-		float: left !important;
+		float: left;
 	}
 </style>

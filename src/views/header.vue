@@ -150,11 +150,9 @@
 				if(this.islogin === false){
 					alert("请先登录")
 				}else{
-					console.log(this.$store.state.isContentShow)
 					let location = '/article2'
 					this.$router.push(location)
 					this.$store.commit('hideContent');
-					console.log(this.$store.state.isContentShow)
 				}
 			}			
 		}

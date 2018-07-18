@@ -8,27 +8,30 @@
       </div>      
       <i class="click-down" @click="rollDown" style="display:none"></i>
     </div>
-    <div id="main_wrapper">
+    <div id="main_wrapper" v-show ="this.$store.state.isContentShow">
       <headerTemp></headerTemp>
       <div id="main">
-        <div id="content" v-show="isShow">
+        <div id="content">
           <router-view/>
         </div>
       </div>
       <i class="click-up" @click=rollUp></i>
+    </div>
+    <div id="write_wrapper" v-show ="!this.$store.state.isContentShow">
+      <writeTemp></writeTemp>
     </div>    
   </div>
 </template>
 <script>
     import welcomeTip from './views/welcomeTip.vue'
     import headerTemp from './views/header.vue'
+    import writeTemp from './views/write.vue'
     export default {
         data() {
             return {
                 state:"wcx",
                 title: "iWangcx's Blog",
-                welcomeTip: `为自己吹过的牛逼奋斗终生`,
-                isShow:this.$store.state.isContentShow
+                welcomeTip: `为自己吹过的牛逼奋斗终生`
             }
         },
         methods:{
@@ -50,7 +53,8 @@
         },
         components:{
             welcomeTip,
-            headerTemp
+            headerTemp,
+            writeTemp
         }
     }
 </script>
@@ -66,6 +70,8 @@
      margin: 0;
      padding: 0;
      font-size: 14px;
+     font-family:"Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+     color:#fff;
     }
     .hide{
       display: none;
@@ -186,5 +192,8 @@
       width: 800px;
       background-color: grey;
       margin: auto;
+    }
+    #write_wrapper{
+      height: 100%;      
     }
 </style>

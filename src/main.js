@@ -9,7 +9,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import 'es6-promise/auto';
 import Vuex from 'vuex';
-import createPersistedState from 'vuex-persistedstate'
+// import createPersistedState from 'vuex-persistedstate'
 
 Vue.config.productionTip = false
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -27,12 +27,14 @@ const store = new Vuex.Store({
   getters: {},
   mutations:{
     hideContent(state){
-      console.log(123);
       state.isContentShow = false;
-    }
-  },
-  plugins: [createPersistedState()]
+    },
+    showContent(state){
+      state.isContentShow = true;
+    }    
+  }
 })
+store.commit('showContent')
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

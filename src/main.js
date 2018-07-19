@@ -9,7 +9,9 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import 'es6-promise/auto';
 import Vuex from 'vuex';
+import 'font-awesome/css/font-awesome.css';
 // import createPersistedState from 'vuex-persistedstate'
+// import './assets/css/global.css';
 
 Vue.config.productionTip = false
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'

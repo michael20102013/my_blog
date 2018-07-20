@@ -18,39 +18,17 @@
                                     <i class="el-icon-circle-plus"></i><span>新建文章</span>
                             </el-header>
                             <el-main class="catalog-content">
-                                <div class="catalog-content-item selected">
+                                <div v-for = "article in articles" class="catalog-content-item selected">
                                     <el-row>
                                         <el-col :span="20">
-                                                <h1>2018-07-18</h1>
-                                                <h3>js 权威指南</h3>
+                                                <h1>{{article.time}}</h1>
+                                                <h3>{{article.title}}</h3>
                                             </el-col>
                                         <el-col :span="4">
                                                 <i class="el-icon-setting"></i>                                                    
                                         </el-col>
                                     </el-row>
                                 </div>
-                                <div class="catalog-content-item">
-                                        <el-row>
-                                            <el-col :span="20">
-                                                    <h1>2018-07-18</h1>
-                                                    <h3>vue 权威指南</h3>
-                                                </el-col>
-                                            <el-col :span="4">
-                                                    <i class="el-icon-setting"></i>                                                    
-                                            </el-col>
-                                        </el-row>
-                                </div>
-                                <div class="catalog-content-item">
-                                        <el-row>
-                                            <el-col :span="20">
-                                                    <h1>2018-07-18</h1>
-                                                    <h3>angular 权威指南</h3>
-                                                </el-col>
-                                            <el-col :span="4">
-                                                    <i class="el-icon-setting"></i>                                                    
-                                            </el-col>
-                                        </el-row>
-                                </div>                                
                             </el-main>
                             <el-footer>
 
@@ -60,58 +38,11 @@
                     <el-col :span="14" class="content">
                         <el-container>
                                 <el-header class="content-title">
-                                        <span>2018-07-18</span>
-                                        <div class="toolbox">
-                                            <el-tooltip class="item" effect="dark" content="粗体" placement="top">
-                                                <el-button class="myfont fa fa-bold small-font"></el-button>
-                                            </el-tooltip>
-                                            <el-tooltip class="item" effect="dark" content="斜体" placement="top">
-                                                <el-button class="myfont fa fa-italic small-font"></el-button>
-                                            </el-tooltip>
-                                            <el-tooltip class="item" effect="dark" content="删除线" placement="top-start">
-                                                <el-button class="myfont fa fa-strikethrough small-font"></el-button>
-                                            </el-tooltip>
-                                            <el-tooltip class="item" effect="dark" content="引用" placement="top">
-                                                <el-button class="myfont fa fa-quote-left small-font"></el-button>
-                                            </el-tooltip>
-                                            <el-tooltip class="item" effect="dark" content="插入图片" placement="top-end">
-                                                <el-button class="myfont fa fa-picture-o small-font"></el-button>
-                                            </el-tooltip>
-                                            <div class="hWrapper" @mouseover="showHfont" @mouseleave="hideHfont">
-                                                <el-tooltip class="item" effect="dark" content="标题1" placement="top">
-                                                    <el-button class="myfont fa fa-undefined small-font">H1
-                                                        <span id="arrow" :class="{hide:isArrowShow,arrow:true}"></span>
-                                                    </el-button>     
-                                                </el-tooltip>
-
-                                                <div id="hFont" :class="{hide:ishFontShow}">
-                                                    <el-tooltip class="item" effect="dark" content="标题2" placement="right">
-                                                        <el-button class="myfont fa fa-undefined small-font">H2</el-button>
-                                                    </el-tooltip>
-                                                    <el-tooltip class="item" effect="dark" content="标题3" placement="right">
-                                                        <el-button class="myfont fa fa-undefined small-font">H3</el-button>
-                                                    </el-tooltip>
-                                                </div>                                                
-                                            </div>
-                                            <el-tooltip class="item" effect="dark" content="分割线" placement="top">
-                                                <el-button class="myfont fa fa-undefined small-font">——</el-button>
-                                            </el-tooltip>
-                                            <el-tooltip class="item" effect="dark" content="插入链接" placement="top">
-                                                <el-button class="myfont fa fa-link small-font"></el-button>
-                                            </el-tooltip>
-                                            <el-tooltip class="item" effect="dark" content="插入视频" placement="top">
-                                                    <el-button class="myfont fa fa-youtube-play small-font"></el-button>
-                                            </el-tooltip>
-                                            <el-tooltip class="item" effect="dark" content="保存" placement="top">
-                                                    <el-button class="myfont fa fa-floppy-o small-font"></el-button>
-                                            </el-tooltip>
-                                            <el-tooltip class="item" effect="dark" content="发布" placement="top">
-                                                    <el-button class="myfont fa fa-mail-forward small-font release"></el-button>
-                                            </el-tooltip>
-                                        </div>
+                                        <div class="content-time">2018-07-18</div>
+                                            <el-button class="myfont fa fa-mail-forward small-font release"></el-button>
                                 </el-header>
-                                <el-main class="catalog-content">
-
+                                <el-main class="content-content">
+                                    <div id="writeArea" class="writeArea"><b>sadffad</b></div>
                                 </el-main>
                                 <el-footer>
                                 </el-footer>
@@ -121,14 +52,33 @@
         </div>
       </template>
       <script>
+        import wangEditor from 'wangeditor';
       export default {
         data(){
             return{
-                ishFontShow:true,
-                isArrowShow:false
+                // ishFontShow:true,
+                // isArrowShow:false,
+                articles:[{
+                    time:"2018-07-18",
+                    title:"JS 权威指南"
+                }]
             }
         },
         created(){
+            this.$http({
+                url:'/api/edit/articles',
+                methods:'GET'
+            }).
+            then((res) => {
+                let _res = res.data;
+                if(_res.cc ===0){
+                    this.articles = _res;
+                }else{
+                    alert('获取文章失败！')
+                }
+            })
+        },
+        mounted(){
               // this.$http.get('http://localhost:3000/api/login').then((res)=>{
               //     this.navs = res.data;
               //     if(res.cc === 0){
@@ -141,17 +91,20 @@
               // })
               // .catch((err)=>{
               //     console.log(err);
-              // })  	
+              // })
+            //   let E = window.wangEditor;
+              let editor2 = new wangEditor('#writeArea');
+              editor2.create();	
         },
         methods:{
             showHfont(){
                 console.log(123)
-                this.ishFontShow = false;
-                this.isArrowShow = true;
+                // this.ishFontShow = false;
+                // this.isArrowShow = true;
             },
             hideHfont(){
-                this.ishFontShow = true;
-                this.isArrowShow = false;
+                // this.ishFontShow = true;
+                // this.isArrowShow = false;
             }
         }
       }
@@ -227,12 +180,14 @@
               padding-top: 15px;
           }
           .content-title{
+              /* overflow: hidden; */
               font-size: 24px;
               text-align: center;
               color: #303133;
               span{
                 margin-bottom: 24px;
               }
+              height: 100px !important;
           }
           .toolbox{
               margin-top: 30px;
@@ -291,6 +246,25 @@
               button{
                   position: relative;
               }
+          }
+          .writeArea{
+                color: #333;
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 1.7;
+                bottom: 0;
+                outline: 0;
+                min-height: 100%;
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+                padding: 0px 40px 80px;
+                min-height: 300px;;
+                .w-e-text-container{
+                    height: 600px !important;
+                }
+          }
+          .content-time{
+              margin-bottom: 20px;
           }
       </style>
       

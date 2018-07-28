@@ -4,7 +4,7 @@
 			<li>
 				<span class="writeText" @click="write">{{writeText}}</span>				
 			</li>			
-			<li v-show="no_login">
+			<li>
 				<span class="login" @click="changeLoginStatus">{{loginUser}}</span>
 			</li>
 			<li><span v-if="no_login"></span><span v-else>用户</span></li>		
@@ -51,15 +51,28 @@
 				no_login:true,
 				dialogFormVisible: false,
 				formLabelWidth: '25%',
-				loginUser:'登录',
+				loginUser:window.getItem('token') ? this.loginUser : '登陆',
 				loginText:'登录',
 				islogin:false,
-				userName:'',
 				password:'',
 				activeIndex: '1',
 				activeIndex2: '1',
-				writeText:"写文章"			
+				writeText:"写文章",	
+				userName:''		
 			}
+		},
+		created(){
+			console.log(123)
+			let token = window.localStorage.getItem('token_name');
+			console.log('headertoken', token);
+			if(token){
+				this.islogin = true;
+			}else{
+				this.islogin = false;
+			}
+			console.log('this.islogin', this.islogin)
+			console.log('this.loginUser', this.loginUser)
+			this.loginUser = this.islogin ? this.loginUser : '登陆'
 		},
 		methods: {
 			dologin(){
@@ -79,7 +92,9 @@
 							alert("登出成功");
 							this.islogin = false;
 							this.dialogFormVisible = false;	
-							this.loginUser = '登录';
+							// this.userName = '登录';
+							this.loginUser = '登陆';
+							window.localStorage.removeItem('token_name');
 						}
 						else{
 							this.dialogFormVisible = false;	
@@ -109,8 +124,10 @@
 							this.islogin = true;
 							this.dialogFormVisible = false;	
 							this.loginUser = _res.name;
+							console.log('loginUser', this.loginUser)
 							token = 'Bearer ' + token;
-							this.addToken(token);	
+							this.addToken(token);
+							window.localStorage.setItem('token_name', {token:token,name:this.userName});
 						}
 						else{
 							this.dialogFormVisible = false;	
@@ -150,7 +167,7 @@
 				if(this.islogin === false){
 					alert("请先登录")
 				}else{
-					let location = '/article2'
+					let location = '/write'
 					this.$router.push(location)
 					this.$store.commit('hideContent');
 				}

@@ -47,15 +47,13 @@ class ArticleModel {
         })
     }
     /**
-     * 更新一条user数据
-     * @param name
+     * 更新一条文章数据
+     * @param id, data
      * @returns {Promise.<boolean>}
      */
-    static async updateArticle (token,data) {
-        console.log('wcxarticle',token);
-        let payload = await verify(token, secret.sign);
-        let name = payload.name;
-        let conditions = {name};
+    static async updateArticle (id,data) {
+        console.log('updatearticle',token);
+        let conditions = {id};
         let update = {$set:data};//要更新的数据
         console.log('update', update);
         return await _models.update(conditions, update, function(err, res){
@@ -64,19 +62,20 @@ class ArticleModel {
                 return false;
             }else{
                 console.log(res);
-                console.log(`update ${name} succcess`);
+                console.log(`update ${id} succcess`);
                 return true;
             }
         })          
       }
     /**
-     * 查询一条user数据
-     * @param name
+     * 查询文章数据
+     * @param id
      * @returns {Promise.<*>}
      */
-    static async queryUser (name) {
+    static async queryArticles (id) {
       console.log('entering db')
-        return await _models.find({name:name}, function(err, docs) {
+      let conditions = id ? {id} : {};
+        return await _models.find(conditions, function(err, docs) {
               if(err){
                   console.log(err);
               }else{

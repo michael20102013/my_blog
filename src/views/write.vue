@@ -4,9 +4,9 @@
                     <el-col :span="4" class="back">
                         <el-container>
                                 <el-header>
-                                    <el-button type="text">
-                                            <span class="backToIndex">返回首页</span>
-                                    </el-button>
+                                    <!-- <el-button type="text"> -->
+                                            <span class="backToIndex"><router-link to="/home">返回首页</router-link></span>
+                                    <!-- </el-button> -->
                                 </el-header>
                                 <el-main></el-main>
                                 <el-footer></el-footer>

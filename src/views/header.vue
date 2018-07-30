@@ -7,7 +7,6 @@
 			<li>
 				<span class="login" @click="changeLoginStatus">{{loginUser}}</span>
 			</li>
-			<li><span v-if="no_login"></span><span v-else>用户</span></li>		
 		</ul>
 		<div class="logo">
 			<span>iWangcx</span>
@@ -48,30 +47,23 @@
 	export default{
 		data(){
 			return{
-				no_login:true,
 				dialogFormVisible: false,
 				formLabelWidth: '25%',
-				loginUser:window.getItem('token') ? this.loginUser : '登陆',
+				loginUser:window.localStorage.getItem('token_name') ? JSON.parse(window.localStorage.getItem('token_name')).name : '登陆',
 				loginText:'登录',
 				islogin:false,
 				password:'',
-				activeIndex: '1',
-				activeIndex2: '1',
-				writeText:"写文章",	
-				userName:''		
+				userName:'',	
+				writeText:"写文章"
 			}
 		},
 		created(){
-			console.log(123)
 			let token = window.localStorage.getItem('token_name');
-			console.log('headertoken', token);
 			if(token){
 				this.islogin = true;
 			}else{
 				this.islogin = false;
 			}
-			console.log('this.islogin', this.islogin)
-			console.log('this.loginUser', this.loginUser)
 			this.loginUser = this.islogin ? this.loginUser : '登陆'
 		},
 		methods: {
@@ -115,8 +107,6 @@
 						}).
 						then((res)=>{
 						let _res = res.data;
-						// window.sessionStorage.setItem('token', token);
-						// console.log(window.sessionStorage.getItem('token'));
 						if(_res.cc === 0){
 							let token = _res.token;							
 							let payload = jwt.verify(token, secret.sign);
@@ -124,10 +114,9 @@
 							this.islogin = true;
 							this.dialogFormVisible = false;	
 							this.loginUser = _res.name;
-							console.log('loginUser', this.loginUser)
 							token = 'Bearer ' + token;
 							this.addToken(token);
-							window.localStorage.setItem('token_name', {token:token,name:this.userName});
+							window.localStorage.setItem('token_name', JSON.stringify({token:token,name:this.userName}));
 						}
 						else{
 							this.dialogFormVisible = false;	

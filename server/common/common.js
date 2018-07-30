@@ -25,6 +25,6 @@ let verifyToken = async (ctx)=>{
          return false;
      }     
 }
- module.exports = {
-     verifyToken
+module.exports = {
+    verifyToken
 }

@@ -17,75 +17,75 @@ class UserModel {
      * @param data
      * @returns {Promise.<*>}
      */
-    static async createUser (data) {
-      let example = new _models(data);
-          return await example.save(function(err, example) {
-              if(err){
-                  console.log('用户保存失败');
-                  return false
-              }else{
-                  console.log(example)
-                  console.log('用户保存成功')
-                  return true
-              }      
-      })
+    static async createUser(data) {
+        let example = new _models(data);
+        return await example.save(function (err, example) {
+            if (err) {
+                console.log('用户保存失败');
+                return false
+            } else {
+                console.log(example)
+                console.log('用户保存成功')
+                return true
+            }
+        })
 
-    // const userSchema2 = mongoose.Schema({
-    //     name:String,
-    //     password:String
-    // });
-    // const modelTest = mongoose.model('modelTest', userSchema2);
-    // let _data = new _models({
-    //     name:'wcxTest2018'
-    // });
-    // // const unitiy = new modelTest(data);
-    // _data.save(function(err,docs){
-    //     if(err){
-    //         console.log(err)
-    //     }
-    //     else{
-    //         console.log(docs)
-    //     }
-    // })    
+        // const userSchema2 = mongoose.Schema({
+        //     name:String,
+        //     password:String
+        // });
+        // const modelTest = mongoose.model('modelTest', userSchema2);
+        // let _data = new _models({
+        //     name:'wcxTest2018'
+        // });
+        // // const unitiy = new modelTest(data);
+        // _data.save(function(err,docs){
+        //     if(err){
+        //         console.log(err)
+        //     }
+        //     else{
+        //         console.log(docs)
+        //     }
+        // })    
     }
     /**
      * 更新一条user数据
      * @param name
      * @returns {Promise.<boolean>}
      */
-    static async updateUser (token,data) {
-        console.log('wcx2222',token);
+    static async updateUser(token, data) {
+        console.log('wcx2222', token);
         let payload = await verify(token, secret.sign);
         let name = payload.name;
-        let conditions = {name};
-        let update = {$set:data};//要更新的数据
+        let conditions = { name };
+        let update = { $set: data };//要更新的数据
         console.log('update', update);
-        return await _models.update(conditions, update, function(err, res){
-            if(err){
+        return await _models.update(conditions, update, function (err, res) {
+            if (err) {
                 console.log('err', err)
                 return false;
-            }else{
+            } else {
                 console.log(res);
                 console.log(`update ${name} succcess`);
                 return true;
             }
-        })          
-      }
+        })
+    }
     /**
      * 查询一条user数据
      * @param name
      * @returns {Promise.<*>}
      */
-    static async queryUser (name) {
-      console.log('entering db')
-        return await _models.find({name:name}, function(err, docs) {
-              if(err){
-                  console.log(err);
-              }else{
-                  return docs;
-              }
+    static async queryUser(name) {
+        console.log('entering db')
+        return await _models.find({ name: name }, function (err, docs) {
+            if (err) {
+                console.log(err);
+            } else {
+                return docs;
+            }
         });
-    }    
+    }
 }
 module.exports = UserModel
 

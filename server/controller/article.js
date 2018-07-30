@@ -1,4 +1,4 @@
-const ArticleModel = require('../models/user.js');
+const ArticleModel = require('../models/articles.js');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const secret = require('../config/secret.json');
@@ -8,6 +8,7 @@ const common = require('../common/common.js')
 class ArticleController {
     //增加文章
     static async createArticle (ctx) {
+        console.log('enter createArticle')
         const data = ctx.request.body;
         let verifyTk = await common.verifyToken(ctx);
         if(verifyTk === true){
@@ -34,7 +35,22 @@ class ArticleController {
 
     }
     static async queryArticle (ctx) {
-
+        let verifyTk = await common.verifyToken(ctx);
+        if(verifyTk === true){
+            let articles = await ArticleModel.queryArticles();
+            if(articles){
+                ctx.body = {
+                    message:'文章查询成功',
+                    cc:0
+                }
+            }else{
+                ctx.body = {
+                    message:'文章查询失败',
+                    data:articles,
+                    cc:1
+                }          
+            }
+        }
     }    
 }
 module.exports = ArticleController

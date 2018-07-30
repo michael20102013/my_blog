@@ -39,10 +39,10 @@
                         <el-container>
                                 <el-header class="content-title">
                                         <div class="content-time">2018-07-18</div>
-                                            <el-button class="myfont fa fa-mail-forward small-font release"></el-button>
+                                            <el-button class="myfont fa fa-mail-forward small-font release" @click = "releaseArticle"></el-button>
                                 </el-header>
                                 <el-main class="content-content">
-                                    <div id="writeArea" class="writeArea"><b>sadffad</b></div>
+                                    <div id="writeArea" class="writeArea"></div>
                                 </el-main>
                                 <el-footer>
                                 </el-footer>
@@ -53,6 +53,7 @@
       </template>
       <script>
         import wangEditor from 'wangeditor';
+        import myTime from '../common/common.js';
       export default {
         data(){
             return{
@@ -61,7 +62,8 @@
                 articles:[{
                     time:"2018-07-18",
                     title:"JS 权威指南"
-                }]
+                }],
+                editorConter:''
             }
         },
         created(){
@@ -79,32 +81,26 @@
             })
         },
         mounted(){
-              // this.$http.get('http://localhost:3000/api/login').then((res)=>{
-              //     this.navs = res.data;
-              //     if(res.cc === 0){
-              //     	alert("登录成功");
-              //     }
-              //     else{
-              //     	alert("登录失败");
-              //     }
-      
-              // })
-              // .catch((err)=>{
-              //     console.log(err);
-              // })
-            //   let E = window.wangEditor;
               let editor2 = new wangEditor('#writeArea');
+              editor2.customConfig.onchange = (html)=> {
+                  this.editorConter = html;
+              }
               editor2.create();	
         },
         methods:{
-            showHfont(){
-                console.log(123)
-                // this.ishFontShow = false;
-                // this.isArrowShow = true;
-            },
-            hideHfont(){
-                // this.ishFontShow = true;
-                // this.isArrowShow = false;
+            releaseArticle(){
+                let t = new myTime();
+                console.log(t.time1());
+                let content = {
+                    id:'',
+                    content:this.editorConter,
+                    updateTime:''
+                }
+                this.$http({
+                    url:'/api/edit/articles',
+                    method:'post',
+                    data:content
+                }) 
             }
         }
       }

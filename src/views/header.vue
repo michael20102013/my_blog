@@ -61,6 +61,7 @@
 			let token = window.localStorage.getItem('token_name');
 			if(token){
 				this.islogin = true;
+				this.addToken(JSON.parse(token).token);
 			}else{
 				this.islogin = false;
 			}
@@ -126,14 +127,6 @@
 					})
 				}
 			},
-			//对话框关闭事件
-			handleClose(done) {
-				this.$confirm('确认关闭？')
-				.then(_ => {
-					done();
-				})
-				.catch(_ => {});
-			},
 			//改变登录状态
 			changeLoginStatus(){
 				this.dialogFormVisible  = true;
@@ -146,10 +139,6 @@
 			//在请求头上加上token
 			addToken(token){
 				this.$http.defaults.headers.common['Authorization'] = token;
-			},
-			//导航事件
-			handleSelect(key, keyPath) {
-				console.log(key, keyPath);
 			},
 			//写文章
 			write(){

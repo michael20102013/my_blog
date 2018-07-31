@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const articleScheam = require('../schema/user.js');
+const articleScheam = require('../schema/articles.js');
 const db = require('../config/db.js');
 const articles = mongoose.model('articles', articleScheam);
 // const _models = mongoose.model('_models',mongoose.Schema({
@@ -18,6 +18,7 @@ class ArticleModel {
      * @returns {Promise.<*>}
      */
     static async createArticle(data) {
+        console.log('data', data);
         let example = new articles(data);
         try {
             return await example.save()
@@ -69,9 +70,10 @@ class ArticleModel {
      * @param id
      * @returns {Promise.<*>}
      */
-    static async queryArticles(id = {}) {
+    static async queryArticles(id) {
         console.log('entering queryArticles')
-        return await articles.find({ id }, function (err, docs) {
+        let conditions = id ? {id} : {};
+        return await articles.find(conditions, function (err, docs) {
             if (err) {
                 console.log(err);
                 return false;

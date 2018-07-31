@@ -41,6 +41,7 @@ class ArticleController {
             if(articles){
                 ctx.body = {
                     message:'文章查询成功',
+                    data:articles,
                     cc:0
                 }
             }else{

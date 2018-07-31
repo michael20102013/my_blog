@@ -58,13 +58,11 @@ class UserController {
     }
     //登出
     static async loginOut (ctx) {
-        console.log('loginout');
         let token = ctx.request.header.authorization.split(' ')[1];
         let data = {token:"null"};
-        console.log('verifyToken',common.verifyToken(ctx))
-        let verifyTk = await common.verifyToken(ctx);
-        console.log('verifyTk',verifyTk);
-        if(verifyTk === true){
+        // let verifyTk = await common.verifyToken(ctx);
+        // console.log('verifyTk',verifyTk);
+        // if(verifyTk === true){
             let upTk = await UserModel.updateUser(token, data);
             console.log('upTk',upTk)
             if(upTk){
@@ -80,9 +78,9 @@ class UserController {
                     token
                 }                
             }
-        }else{
-            throw(ctx.throw(401));
-        }
+        // }else{
+            // throw(ctx.throw(401));
+        // }
 
         // common.verifyToken(ctx).then((res)=>{
         //     if(res === true){

@@ -1,5 +1,5 @@
 //时间格式化
-function myTime() {
+function MYTime() {
     this.time1 = function(){
         let d=new Date()
         let day=d.getDate()
@@ -8,7 +8,7 @@ function myTime() {
         return year + '/' + month + '/' + day        
     }
 }
-// class myTime{
+// class MYTime{
 //     constructor(){}
 //     time1(){
 //         let d=new Date()
@@ -19,5 +19,5 @@ function myTime() {
 //     }    
 // }
  module.exports = {
-    myTime
+    MYTime
 }

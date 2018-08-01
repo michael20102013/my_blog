@@ -17,14 +17,14 @@
             <el-col :span="6" class="catalog">
                 <el-container>
                     <el-header class="add">
-                        <i class="el-icon-circle-plus"></i>
+                        <i class="el-icon-circle-plus" @click="addArticle"></i>
                         <span>新建文章</span>
                     </el-header>
                     <el-main class="catalog-content">
                         <div v-for="(article, index) in articles" :class="select(index)">
                             <el-row>
                                 <el-col :span="20">
-                                    <h1>{{article.update_time}}</h1>
+                                    <h1 class="article-h1" @click="">{{article.update_time}}</h1>
                                     <h3 class="note-content">{{article.content|delHtmlTag}}</h3>
                                 </el-col>
                                 <el-col :span="4">
@@ -72,19 +72,7 @@
             }
         },
         created() {
-            this.$http({
-                url: '/api/edit/articles',
-                methods: 'GET'
-            }).
-                then((res) => {
-                    let _res = res.data;
-                    if (_res.cc === 0) {
-                        this.articles = _res.data;
-                        this.editingID = this.articles[0].id;
-                    } else {
-                        alert('获取文章失败！')
-                    }
-                })
+            this.getArticles();
         },
         mounted() {
             let editor2 = new wangEditor('#writeArea');
@@ -94,30 +82,61 @@
             editor2.create();
         },
         methods: {
+            //更新文章(发布文章)
             releaseArticle() {
                 let t = new MYTime();
-                console.log(t.time1());
                 let content = {
-                    id: 1,
+                    _id: this.editingID,
                     content: this.editorConter,
+                    update_time: t.time1()
+                }
+                this.$http({
+                    url: '/api/edit/articles',
+                    method: 'put',
+                    data: content
+                })
+            },
+            //选中文章样式
+            select(index){
+                return {
+                    'catalog-content-item' :true,
+                    'selected': index === this.defaultIndex
+                };
+            },
+            //新建文章
+            addArticle(){
+                let t = new MYTime();
+                let content = {
+                    content: "",
                     update_time: t.time1()
                 }
                 this.$http({
                     url: '/api/edit/articles',
                     method: 'post',
                     data: content
-                })
-            }         
+                }).then(
+                    this.getArticles()
+                )               
+            },
+            //获取文章
+            getArticles() {
+                this.$http({
+                    url: '/api/edit/articles',
+                    methods: 'GET'
+                }).
+                    then((res) => {
+                        let _res = res.data;
+                        if (_res.cc === 0) {
+                            this.articles = _res.data;
+                            this.editingID = this.articles[0]._id;
+                        } else {
+                            alert('获取文章失败！')
+                        }
+                    })
+            }                            
         },
         computed:{
-            select(index){
-                console.log('index', index)
-                console.log('defaultIndex', defaultIndex)
-                return {
-                    'catalog-content-item' :true,
-                    'selected': article === defaultIndex
-                };
-            }
+
         },
         filters:{
             delHtmlTag: function(str = ''){
@@ -318,5 +337,8 @@
         -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
         display: -webkit-box;
+    }
+    .article-h1{
+        cursor: pointer;
     }
 </style>

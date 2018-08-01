@@ -49,18 +49,19 @@ class ArticleModel {
      * @param id, data
      * @returns {Promise.<boolean>}
      */
-    static async updateArticle(id, data) {
-        console.log('updatearticle', token);
-        let conditions = { id };
-        let update = { $set: data };//要更新的数据
-        console.log('update', update);
-        return await _models.update(conditions, update, function (err, res) {
+    static async updateArticle(data) {
+        let conditions = { _id: data._id };
+        let update = { $set: {
+            content:data.content,
+            update_time:data.update_time
+        } };//要更新的数据
+        return await articles.update(conditions, update, function (err, res) {
             if (err) {
                 console.log('err', err)
                 return false;
             } else {
                 console.log(res);
-                console.log(`update ${id} succcess`);
+                console.log(`update ${data._id} succcess`);
                 return true;
             }
         })

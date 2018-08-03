@@ -23,9 +23,11 @@
                     <el-main class="catalog-content">
                         <div v-for="(article, index) in articles" :class="select(index)">
                             <el-row>
-                                <el-col :span="20">
-                                    <h1 class="article-h1" @click="">{{article.update_time}}</h1>
-                                    <h3 class="note-content">{{article.content|delHtmlTag}}</h3>
+                                <el-col :span="20" class="artilce-title">
+                                    <div @click="selected(index)">
+                                        <h1>{{article.update_time}}</h1>
+                                        <h3 class="note-content">{{article.content|delHtmlTag}}</h3>
+                                    </div>
                                 </el-col>
                                 <el-col :span="4">
                                     <i class="el-icon-setting"></i>
@@ -66,7 +68,7 @@
                     time: "2018-07-18",
                     title: "JS 权威指南"
                 }],
-                editorConter: '',
+                editorContent: '',
                 editingID: '',
                 defaultIndex: 0
             }
@@ -75,11 +77,10 @@
             this.getArticles();
         },
         mounted() {
-            let editor2 = new wangEditor('#writeArea');
-            editor2.customConfig.onchange = (html) => {
-                this.editorConter = html;
-            }
-            editor2.create();
+            this.initWangEditor();
+        },
+        updated(){
+            this.initWangEditor(this.editorContent);
         },
         methods: {
             //更新文章(发布文章)
@@ -87,7 +88,7 @@
                 let t = new MYTime();
                 let content = {
                     _id: this.editingID,
-                    content: this.editorConter,
+                    content: this.editorContent,
                     update_time: t.time1()
                 }
                 this.$http({
@@ -95,16 +96,26 @@
                     method: 'put',
                     data: content
                 })
+                    .then(
+                        this.getArticles()
+                    )
             },
             //选中文章样式
-            select(index){
+            select(index) {
                 return {
-                    'catalog-content-item' :true,
+                    'catalog-content-item': true,
                     'selected': index === this.defaultIndex
                 };
             },
+            //处理选中文章
+            selected(index) {
+                this.defaultIndex = index;
+                this.editorContent = this.articles[index].content;
+                this.editingID = this.articles[index]._id;
+                this.initWangEditor(this.editorContent);
+            },
             //新建文章
-            addArticle(){
+            addArticle() {
                 let t = new MYTime();
                 let content = {
                     content: "",
@@ -116,7 +127,7 @@
                     data: content
                 }).then(
                     this.getArticles()
-                )               
+                )
             },
             //获取文章
             getArticles() {
@@ -128,21 +139,31 @@
                         let _res = res.data;
                         if (_res.cc === 0) {
                             this.articles = _res.data;
-                            this.editingID = this.articles[0]._id;
+                            this.editingID = this.articles[this.defaultIndex]._id;
+                            this.editorContent = this.articles[this.defaultIndex].content;
                         } else {
                             alert('获取文章失败！')
                         }
                     })
-            }                            
+            },
+            //初始化文章内容
+            initWangEditor(content = '') {
+                let editor2 = new wangEditor('#writeArea');
+                editor2.customConfig.onchange = (html) => {
+                    this.editorContent = html;
+                }
+                editor2.create();
+                editor2.txt.html(content);
+            }
         },
-        computed:{
+        computed: {
 
         },
-        filters:{
-            delHtmlTag: function(str = ''){
+        filters: {
+            delHtmlTag: function (str = '') {
                 //去掉所有的html标记
                 return str.replace(/<[^>]+>/g, "");
-            }               
+            }
         }
     }
 </script>
@@ -338,7 +359,8 @@
         -webkit-box-orient: vertical;
         display: -webkit-box;
     }
-    .article-h1{
+
+    .artilce-title {
         cursor: pointer;
     }
 </style>

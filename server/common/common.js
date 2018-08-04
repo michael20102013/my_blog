@@ -16,9 +16,11 @@ let verifyToken = async (ctx)=>{
      //转化成json对象
      let strUser = JSON.stringify(user);
      let dbUser = JSON.parse(strUser);
-     console.log('dbUser.token',dbUser.token);
-     console.log('token',token);
-     if(dbUser.token === token){
+     let f1 = function getLocalTime(nS) {  
+        return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');  
+       }
+     console.log(f1(payload.exp), f1(Date.now()));
+     if(dbUser.token === token && payload.exp - Date.now() > 0){
         console.log('相等')
          return true;
      }else{

@@ -53,7 +53,8 @@ class ArticleModel {
         let conditions = { _id: data._id };
         let update = { $set: {
             content:data.content,
-            update_time:data.update_time
+            update_time:data.update_time,
+            title:data.title
         } };//要更新的数据
         return await articles.update(conditions, update, function (err, res) {
             if (err) {

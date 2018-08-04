@@ -5,7 +5,7 @@ import Router from 'vue-router'
 import App from '@/App'
 import welcome from '@/views/welcome'
 import dashboard from '@/views/dashboard'
-import article1 from '@/views/article1'
+import articles from '@/views/articles'
 import article2 from '@/views/article2'
 import header from '@/views/header'
 import home from '@/views/home'
@@ -33,7 +33,10 @@ export default new Router({
     {
       path: '/home',
       name: 'home',
-      component: home
+      component: home,
+      children:[
+        {path:'/home/articles',component:articles}
+      ]
     },  
     {
       path: '/write',

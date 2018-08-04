@@ -16,7 +16,7 @@
 			<li><router-link to="/article2">技术</router-link></li>
 			<li><router-link to="/article3">专题</router-link></li>
 			<li><router-link to="/article4">作品</router-link></li>
-			<li><router-link to="/article5">文章</router-link></li>			
+			<li><router-link to="/home/articles">文章</router-link></li>			
 			<li><router-link to="/article6">更多</router-link></li>			
 		</ul>					
 		<!-- 对话框组件-start -->
@@ -51,20 +51,13 @@
 				formLabelWidth: '25%',
 				loginUser:window.localStorage.getItem('token_name') ? JSON.parse(window.localStorage.getItem('token_name')).name : '登陆',
 				loginText:'登录',
-				islogin:false,
+				islogin:this.$store.state.islogin,
 				password:'',
 				userName:'',	
 				writeText:"写文章"
 			}
 		},
 		created(){
-			let token = window.localStorage.getItem('token_name');
-			if(token){
-				this.islogin = true;
-				this.addToken(JSON.parse(token).token);
-			}else{
-				this.islogin = false;
-			}
 			this.loginUser = this.islogin ? this.loginUser : '登陆'
 		},
 		methods: {
@@ -84,6 +77,7 @@
 						else if(_res.cc === 0){
 							alert("登出成功");
 							this.islogin = false;
+							this.$store.commit('changeTologout');
 							this.dialogFormVisible = false;	
 							// this.userName = '登录';
 							this.loginUser = '登陆';
@@ -113,6 +107,7 @@
 							let payload = jwt.verify(token, secret.sign);
 							alert("登录成功");
 							this.islogin = true;
+							this.$store.commit('changeTologin');
 							this.dialogFormVisible = false;	
 							this.loginUser = _res.name;
 							token = 'Bearer ' + token;
@@ -136,10 +131,6 @@
 					this.loginText = '登录'
 				}
 			},
-			//在请求头上加上token
-			addToken(token){
-				this.$http.defaults.headers.common['Authorization'] = token;
-			},
 			//写文章
 			write(){
 				if(this.islogin === false){
@@ -149,6 +140,9 @@
 					this.$router.push(location)
 					this.$store.commit('hideContent');
 				}
+			},
+			addToken(token){
+				this.$http.defaults.headers.common['Authorization'] = token;
 			}			
 		}
 	}

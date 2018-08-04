@@ -101,7 +101,23 @@ class UserController {
         //         throw(ctx.throw(401));
         //     }
         // })
-    }  
+    }
+    static async judgeJWT(ctx){
+        // let token = ctx.request.header.authorization.split(' ')[1];
+        let verifyTk = await common.verifyToken(ctx);
+        if(verifyTk === true){
+            ctx.body = {
+                message:'登录状态未失效',
+                cc:0
+            }             
+        }
+        else{
+            ctx.body = {
+                message:'登录状态已失效',
+                cc:1
+            }             
+        }
+    }
     static async test(ctx){
         ctx.body = {
             message:"成功"

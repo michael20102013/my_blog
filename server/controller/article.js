@@ -49,7 +49,9 @@ class ArticleController {
         }        
     }
     static async queryArticle (ctx) {
+        console.log('queryArticle')
         let verifyTk = await common.verifyToken(ctx);
+        console.log('verifyTk',verifyTk)
         if(verifyTk === true){
             let articles = await ArticleModel.queryArticles();
             if(articles){

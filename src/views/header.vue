@@ -72,6 +72,7 @@
 						then((res)=>{
 						let _res = res.data
 						if(res.cc === 401){
+							this.islogin = false;
 							alert('登出失败')
 						}
 						else if(_res.cc === 0){
@@ -86,6 +87,7 @@
 						else{
 							this.dialogFormVisible = false;	
 							alert("登出失败");
+							this.islogin = false;
 						}
 
 					})
@@ -138,7 +140,6 @@
 				}else{
 					let location = '/write'
 					this.$router.push(location)
-					this.$store.commit('hideContent');
 				}
 			},
 			addToken(token){

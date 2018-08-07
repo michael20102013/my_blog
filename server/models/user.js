@@ -53,10 +53,11 @@ class UserModel {
      * @param name
      * @returns {Promise.<boolean>}
      */
-    static async updateUser(token, data) {
-        console.log('wcx2222', token);
-        let payload = await verify(token, secret.sign);
-        let name = payload.name;
+    static async updateUser(name, data) {
+        console.log('wcx22226', name);
+        // let payload = await verify(token, secret.sign);
+        console.log('test', 1111);
+        // let name = payload.name;
         let conditions = { name };
         let update = { $set: data };//要更新的数据
         console.log('update', update);
@@ -78,6 +79,7 @@ class UserModel {
      */
     static async queryUser(name) {
         console.log('entering db')
+        console.log('name',name)
         return await _models.find({ name: name }, function (err, docs) {
             if (err) {
                 console.log(err);

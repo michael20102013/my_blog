@@ -8,7 +8,8 @@ const router = new Router({
 router.post('/', UserController.postLogin)
 router.post('/login', UserController.postLogin)
 router.post('/login_out', UserController.loginOut)
-router.post('/jwt', UserController.judgeJWT)
+//前端文章处理
+router.get('/see/articles', ArticleController.queryArticle)
 //后台文章处理
 router.post('/edit/articles', ArticleController.createArticle)
 router.delete('/edit/articles', ArticleController.deleteArticle)

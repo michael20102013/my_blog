@@ -30,7 +30,8 @@ class UserController {
                 const token = jwt.sign(userToken, secret.sign, {expiresIn: '2 days'})
                 let data = {'token':token};
                 //把token存储到数据库
-                UserModel.updateUser(token,data);
+                // UserModel.updateUser(token,data);
+                UserModel.updateUser( jsonUsesr.name,data);
                 //解析token
                 // let payload = await verify(token, secret.sign);
                 ctx.body = {
@@ -63,7 +64,14 @@ class UserController {
         // let verifyTk = await common.verifyToken(ctx);
         // console.log('verifyTk',verifyTk);
         // if(verifyTk === true){
-            let upTk = await UserModel.updateUser(token, data);
+            // try{
+            //     let payload = await verify(token, secret.sign);
+            // }
+            // catch(err){
+            //     console.log(err.status);
+            // }
+            let payload = await verify(token, secret.sign);
+            let upTk = await UserModel.updateUser(payload.name, data);
             console.log('upTk',upTk)
             if(upTk){
                 ctx.body = {

@@ -35,7 +35,12 @@ export default new Router({
       name: 'home',
       component: home,
       children:[
-        {path:'/home/articles',component:articles}
+        {
+          path:'',redirect: '/home/articles'
+        },      
+        {
+          path:'/home/articles',component:articles
+        }
       ]
     },  
     {

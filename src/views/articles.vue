@@ -14,7 +14,9 @@
 								{{item.title}}
 							</el-header>
 							<el-main>
-								{{item.content|delHtmlTag}}
+								<div class="catalog">
+									{{item.content|delHtmlTag}}
+								</div>
 							</el-main>
 						</el-container>
 					</el-main>
@@ -110,18 +112,28 @@
 	#article1 {
 		width: 1000px;
 		margin: 0 auto;
+		height: 1000px;
+		
 	}
-	.el-aside-time{
+	.el-aside-time {
 		padding: 20px;
 		background-color: #AAAAAA;
 		margin-top:20px;
 	}
-	.el-header{
+	.el-header {
 		text-align: center;
 		line-height: 60px;
 	}
-	.article-container{
+	.article-container {
 		border-top: 1px #F4F4F4 solid;
 		border-bottom: 1px #F4F4F4 solid;
-	}	
+	}
+	.catalog {	
+		/* white-space: nowrap; */
+		/* text-overflow: ellipsis; */
+		overflow: hidden;
+		width:580px;
+		height: 80px;;
+
+	}
 </style>

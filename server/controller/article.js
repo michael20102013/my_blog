@@ -50,23 +50,21 @@ class ArticleController {
     }
     static async queryArticle (ctx) {
         console.log('queryArticle')
-        let verifyTk = await common.verifyToken(ctx);
-        console.log('verifyTk',verifyTk)
-        if(verifyTk === true){
-            let articles = await ArticleModel.queryArticles();
-            if(articles){
-                ctx.body = {
-                    message:'文章查询成功',
-                    data:articles,
-                    cc:0
-                }
-            }else{
-                ctx.body = {
-                    message:'文章查询失败',
-                    data:articles,
-                    cc:1
-                }          
+        // let verifyTk = await common.verifyToken(ctx);
+        // console.log('verifyTk', verifyTk)
+        let articles = await ArticleModel.queryArticles();
+        if (articles) {
+            ctx.body = {
+                message: '文章查询成功',
+                data: articles,
+                cc: 0
             }
+        }else{
+            ctx.body = {
+                message: '文章查询成功',
+                data: articles,
+                cc: 0
+            }            
         }
     }    
 }

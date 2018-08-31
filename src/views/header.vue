@@ -11,14 +11,17 @@
 		<div class="logo">
 			<span>iWangcx</span>
 		</div>		
+		<!-- <ul class="center">
+			<li :class="{active:1 == 1}" @click="setIndex(0)"><router-link to="/article1">首页</router-link></li>
+			<li :class="{active:isActive}" @click="setIndex(1)"><router-link to="/article2">技术</router-link></li>
+			<li :class="{active:isActive}" @click="setIndex(2)"><router-link to="/article3">专题</router-link></li>
+			<li :class="{active:isActive}" @click="setIndex(3)"><router-link to="/article4">作品</router-link></li>
+			<li :class="{active:isActive}" @click="setIndex(4)"><router-link to="/home/articles">文章</router-link></li>			
+			<li :class="{active:isActive}" @click="setIndex(5)"><router-link to="/article6">更多</router-link></li>			
+		</ul> -->
 		<ul class="center">
-			<li><router-link to="/article1">首页</router-link></li>
-			<li><router-link to="/article2">技术</router-link></li>
-			<li><router-link to="/article3">专题</router-link></li>
-			<li><router-link to="/article4">作品</router-link></li>
-			<li><router-link to="/home/articles">文章</router-link></li>			
-			<li><router-link to="/article6">更多</router-link></li>			
-		</ul>					
+			<li v-for = "(item, index) in navs" :class="{active:index === selectIndex}" @click="setIndex(index, item.link)">{{item.name}}</li>		
+		</ul>			
 		<!-- 对话框组件-start -->
 		<el-row>
 				<el-col :span="12">
@@ -54,7 +57,28 @@
 				islogin:this.$store.state.islogin,
 				password:'',
 				userName:'',	
-				writeText:"写文章"
+				writeText:"写文章",
+				isActive:true,
+				selectIndex: 4,
+				navs:[{
+					name:'首页',
+					link:'/article1'
+				}, {
+					name:'技术',
+					link:'/article2'
+				}, {
+					name:'专题',
+					link:'/home/subject'
+				}, {
+					name:'作品',
+					link:'/article4'
+				}, {
+					name:'文章',
+					link:'/home/articles'
+				}, {
+					name:'更多',
+					link:'/article6'
+				}]
 			}
 		},
 		created(){
@@ -144,7 +168,12 @@
 			},
 			addToken(token){
 				this.$http.defaults.headers.common['Authorization'] = token;
-			}			
+			},
+			setIndex(num, link) {
+				this.selectIndex = num;
+				let location = link;
+				this.$router.push(location);
+			}
 		}
 	}
 </script>
@@ -152,23 +181,18 @@
 	.router-link-active {
 		text-decoration: none;
 	}
+	a{
+		text-decoration: none;
+		color:#fff; 
+	}	
 	#header{
+		overflow: hidden;
 		line-height: 50px;
 		font-family: Microsoft YaHei;
 		background-color: #32373b;
 		color: white;
-		height: 50px;
-		a{
-			text-decoration: none;
-			color:#fff; 
-		}
-		a:hover{
-			color:#00C1DE;
-		}		
-		.right{
-			float: right;
-		}
-		.center{
+		height: 50px;		
+		.center {
 			margin:auto;
 			width: 500px;
 			position: relative;
@@ -176,9 +200,20 @@
 			li{
 				float: left;
 				position: relative;
+				/* margin-right: 20px; */
+				list-style: none;
+				width: 80px;
+				text-align: center;
+			}
+			li:hover {
+				cursor: pointer;
+				background-color: #fff;
+				color: black;
 			}
 		}
-		ul{
+		.right{
+			float: right;
+			width: 200px;
 			overflow: hidden;
 			li{
 				float: right;
@@ -215,4 +250,8 @@
 		margin-left: 50px;
 		float: left;
 	}
+	.active {
+		background-color: #fff;
+		color:black;
+	} 
 </style>

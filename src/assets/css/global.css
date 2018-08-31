@@ -22,3 +22,16 @@ a {
 a:hover {
   color: #00C1DE;
 }
+.hover {
+  cursor: pointer;
+}
+.mainWrapper {
+  width: 1000px;
+  margin: 0 auto;
+  /* overflow: hidden; */
+}
+.tag {
+  background-color: #EDEDED;
+  line-height: 20px !important;
+  height: 20px !important;
+}

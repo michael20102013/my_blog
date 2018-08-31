@@ -9,12 +9,12 @@ router.post('/', UserController.postLogin)
 router.post('/login', UserController.postLogin)
 router.post('/login_out', UserController.loginOut)
 //前端文章处理
-router.get('/see/articles', ArticleController.queryArticle)
+router.post('/see/articles', ArticleController.queryArticle)
 //后台文章处理
 router.post('/edit/articles', ArticleController.createArticle)
 router.delete('/edit/articles', ArticleController.deleteArticle)
 router.put('/edit/articles', ArticleController.updateArticle)
-router.get('/edit/articles', ArticleController.queryArticle)
+router.post('/query/articles', ArticleController.queryArticle)
 
 router.post('/test', UserController.test)
 

@@ -50,39 +50,51 @@ class ArticleModel {
      * @returns {Promise.<boolean>}
      */
     static async updateArticle(data) {
-        let conditions = { _id: data._id };
+        console.log('data._id', data._id)
+        let conditions = { _id: mongoose.Types.ObjectId(data._id) };
+        // let conditions = mongoose.Types.ObjectId(data._id);
         let update = { $set: {
             content:data.content,
             update_time:data.update_time,
             title:data.title
         } };//要更新的数据
-        return await articles.update(conditions, update, function (err, res) {
-            if (err) {
-                console.log('err', err)
-                return false;
-            } else {
-                console.log(res);
-                console.log(`update ${data._id} succcess`);
-                return true;
-            }
-        })
+        // return await articles.findByIdAndUpdate(conditions, update, {}, (err, res) => {
+        //     if (err) {
+        //         console.log('err', err)
+        //         return false;
+        //     } else {
+        //         return true;
+        //     }
+        // })
+
+        return await articles.findByIdAndUpdate(conditions, update, {new:true})        
     }
     /**
      * 查询文章数据
      * @param id
      * @returns {Promise.<*>}
      */
-    static async queryArticles(id) {
-        console.log('entering queryArticles')
-        let conditions = id ? {id} : {};
-        return await articles.find(conditions, function (err, docs) {
-            if (err) {
-                console.log(err);
-                return false;
-            } else {
-                return docs;
-            }
-        });
+    static async queryArticles(id, _limit, _skip) {
+        let conditions = id ? {_id: mongoose.Types.ObjectId(id)} : {};
+        if(_limit === -1) {
+            return await articles.find(conditions, null, {new:true}, function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    return false;
+                } else {
+                    return docs;
+                }
+            }).skip(_skip);            
+        }else{
+            return await articles.find(conditions, null, {new:true}, function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    return false;
+                } else {
+                    return docs;
+                }
+            }).limit(_limit).skip(_skip);
+        }
     }
 }
 module.exports = ArticleModel

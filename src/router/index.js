@@ -10,6 +10,7 @@ import article2 from '@/views/article2'
 import header from '@/views/header'
 import home from '@/views/home'
 import write from '@/views/write'
+import article from '@/views/article'
 
 Vue.use(Router)
 
@@ -40,7 +41,13 @@ export default new Router({
         },      
         {
           path:'/home/articles',component:articles
-        }
+        },
+        {
+          path:'/home/article', name: 'article', component:article
+        },
+        {
+          path:'/home/subject', name: 'subject', component:article2
+        }            
       ]
     },  
     {

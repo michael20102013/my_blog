@@ -33,16 +33,19 @@ class ArticleController {
     static async updateArticle (ctx) {
         let verifyTk = await common.verifyToken(ctx);
         const data = ctx.request.body;
+        console.log('updateArticle')
         if (verifyTk === true) {
             let articles = await ArticleModel.updateArticle(data);
+            console.log('updateArticle', articles)
             if (articles) {
                 ctx.body = {
-                    message: '文章查询成功',
-                    cc: 0
+                    message: '文章更新成功',
+                    cc: 0,
+                    data: articles                  
                 }
             } else {
                 ctx.body = {
-                    message: '文章查询失败',
+                    message: '文章更新失败',
                     cc: 1
                 }
             }
@@ -52,7 +55,11 @@ class ArticleController {
         console.log('queryArticle')
         // let verifyTk = await common.verifyToken(ctx);
         // console.log('verifyTk', verifyTk)
-        let articles = await ArticleModel.queryArticles();
+        const data = ctx.request.body;
+        let id = data.id ? data.id : undefined;
+        let limit = data.limit ? data.limit : -1;
+        let skip = data.skip ? data.skip : 0; 
+        let articles = await ArticleModel.queryArticles(id, limit, skip);
         if (articles) {
             ctx.body = {
                 message: '文章查询成功',

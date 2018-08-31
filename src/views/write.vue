@@ -100,7 +100,14 @@
                     data: content
                 })
                     .then(
-                        this.getArticles()
+                        (res) => {
+                            let _res = res.data;
+                            if (_res.cc === 0) {
+                                this.getArticles();
+                            } else {
+                                alert('获取文章失败！')
+                            }
+                        }
                     )
             },
             //选中文章样式
@@ -121,7 +128,6 @@
             //新建文章
             addArticle() {
                 let t = new MYTime();
-                console.log("t.time1()",t.time1())
                 let content = {
                     content: "",
                     update_time: t.time1(),
@@ -138,8 +144,9 @@
             //获取文章
             getArticles() {
                 this.$http({
-                    url: '/api/edit/articles',
-                    methods: 'GET'
+                    url: '/api/query/articles',
+                    method: 'post',
+                    content:{}
                 }).
                     then((res) => {
                         let _res = res.data;
@@ -148,10 +155,10 @@
                             this.editingID = this.articles[this.defaultIndex]._id;
                             this.editorContent = this.articles[this.defaultIndex].content;
                             this.title = this.articles[this.defaultIndex].title;
+                            this.initWangEditor(this.editorContent);
                         } else {
                             alert('获取文章失败！')
                         }
-                        this.initWangEditor(this.editorContent);
                     })
             },
             //初始化文章内容
@@ -178,7 +185,7 @@
         }
     }
 </script>
-<style lang="less">
+<style lang="less" scoped>
     .el-icon-setting,
     .el-icon-circle-plus {
         cursor: pointer;
@@ -209,7 +216,7 @@
 
     .content {
         min-width: 800px;
-        /* height: 100%; */
+        height: 100%;
         float: left;
         background-color: blanchedalmond;
     }

@@ -6,7 +6,7 @@ import App from '@/App'
 import welcome from '@/views/welcome'
 import dashboard from '@/views/dashboard'
 import articles from '@/views/articles'
-import article2 from '@/views/article2'
+import knowledge_topo from '@/views/knowledge_topo'
 import header from '@/views/header'
 import home from '@/views/home'
 import write from '@/views/write'
@@ -46,7 +46,7 @@ export default new Router({
           path:'/home/article', name: 'article', component:article
         },
         {
-          path:'/home/subject', name: 'subject', component:article2
+          path:'/home/knowledge_topo', name: 'subject', component:knowledge_topo
         }            
       ]
     },  

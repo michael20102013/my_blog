@@ -11,16 +11,8 @@
 		<div class="logo">
 			<span>iWangcx</span>
 		</div>		
-		<!-- <ul class="center">
-			<li :class="{active:1 == 1}" @click="setIndex(0)"><router-link to="/article1">首页</router-link></li>
-			<li :class="{active:isActive}" @click="setIndex(1)"><router-link to="/article2">技术</router-link></li>
-			<li :class="{active:isActive}" @click="setIndex(2)"><router-link to="/article3">专题</router-link></li>
-			<li :class="{active:isActive}" @click="setIndex(3)"><router-link to="/article4">作品</router-link></li>
-			<li :class="{active:isActive}" @click="setIndex(4)"><router-link to="/home/articles">文章</router-link></li>			
-			<li :class="{active:isActive}" @click="setIndex(5)"><router-link to="/article6">更多</router-link></li>			
-		</ul> -->
 		<ul class="center">
-			<li v-for = "(item, index) in navs" :class="{active:index === selectIndex}" @click="setIndex(index, item.link)">{{item.name}}</li>		
+			<li v-for = "(item, index) in navs" :class="{active:item.link === selectIndex}" @click="setIndex(index, item.link)">{{item.name}}</li>		
 		</ul>			
 		<!-- 对话框组件-start -->
 		<el-row>
@@ -59,7 +51,7 @@
 				userName:'',	
 				writeText:"写文章",
 				isActive:true,
-				selectIndex: 4,
+				selectIndex: '/home/articles',
 				navs:[{
 					name:'首页',
 					link:'/article1'
@@ -76,13 +68,14 @@
 					name:'文章',
 					link:'/home/articles'
 				}, {
-					name:'更多',
-					link:'/article6'
+					name:'技能体系',
+					link:'/home/knowledge_topo'
 				}]
 			}
 		},
 		created(){
-			this.loginUser = this.islogin ? this.loginUser : '登陆'
+			this.loginUser = this.islogin ? this.loginUser : '登陆';
+			this.selectIndex = location.href.split('#')[1];
 		},
 		methods: {
 			dologin(){
@@ -170,7 +163,7 @@
 				this.$http.defaults.headers.common['Authorization'] = token;
 			},
 			setIndex(num, link) {
-				this.selectIndex = num;
+				this.selectIndex = link;
 				let location = link;
 				this.$router.push(location);
 			}

@@ -12,7 +12,7 @@
 			<span>iWangcx</span>
 		</div>		
 		<ul class="center">
-			<li v-for = "(item, index) in navs" :class="{active:item.link === selectIndex}" @click="setIndex(index, item.link)">{{item.name}}</li>		
+			<li v-for = "(item, index) in navs" :class="{active:dealLink(item.link) === selectIndex}" @click="setIndex(index, item.link)">{{item.name}}</li>		
 		</ul>			
 		<!-- 对话框组件-start -->
 		<el-row>
@@ -75,7 +75,7 @@
 		},
 		created(){
 			this.loginUser = this.islogin ? this.loginUser : '登陆';
-			this.selectIndex = location.href.split('#')[1];
+			this.selectIndex = location.href.split('#')[1] === '/home/article' ? '/home/articles' : location.href.split('#')[1];
 		},
 		methods: {
 			dologin(){
@@ -166,6 +166,13 @@
 				this.selectIndex = link;
 				let location = link;
 				this.$router.push(location);
+			},
+			dealLink(link) {
+				if(link === '/home/article') {
+					return '/home/articles'
+				}else{
+					return link;
+				}
 			}
 		}
 	}

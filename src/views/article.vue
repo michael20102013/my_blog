@@ -38,7 +38,7 @@
                         if (_res.cc === 0) {
                             this.article = _res.data[0];
                             this.text = this.rmQuotation(this.article.content)
-                            this.tag = `创建时间：${this.article.update_time} &nbsp 更新时间：${this.article.update_time}`
+                            this.tag = `创建时间：${this.article.create_time} &nbsp 更新时间：${this.article.update_time}`
                         } else {
                             alert('获取文章失败！')
                         }
@@ -64,10 +64,17 @@
     .el-main {
         background-color: #fff;
         color: #333;
-        text-align: center;
+        /* text-align: center; */
     }
     #article-title {
         background-color: #fff;
+        font-size: 2em;
+        -webkit-margin-before: 0.67em;
+        -webkit-margin-after: 0.67em;
+        -webkit-margin-start: 0px;
+        -webkit-margin-end: 0px;
+        font-weight: bold;
+        overflow: hidden;         
     }
     .article-content {
         height: 600px;

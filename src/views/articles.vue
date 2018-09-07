@@ -14,8 +14,7 @@
 								<span class="hover font-orange" @click ="enterArticle(item._id)">{{item.title}}</span>				
 							</el-header>
 							<el-main>
-								<div class="catalog">
-									{{item.content|delHtmlTag}}
+								<div class="catalog" v-html = item.content>
 								</div>
 							</el-main>
 						</el-container>
@@ -61,19 +60,6 @@
 			}
 		},
 		created() {
-			// this.$http.get('http://localhost:3000/api/login').then((res)=>{
-			//     this.navs = res.data;
-			//     if(res.cc === 0){
-			//     	alert("登录成功");
-			//     }
-			//     else{
-			//     	alert("登录失败");
-			//     }
-
-			// })
-			// .catch((err)=>{
-			//     console.log(err);
-			// })
 			let content = {
 				limit: 3
 			}
@@ -164,7 +150,7 @@
 		/* text-overflow: ellipsis; */
 		overflow: hidden;
 		width:580px;
-		height: 80px;
+		height: 76px;
 		line-height: 25px;
 	}
 	.font-orange {
@@ -191,10 +177,8 @@
     }	
 
     .el-main {
-        /* background-color: #E9EEF3; */
         background-color: #fff;
         color: #333;
-        text-align: center;
         line-height: 160px;
 	}
 	#readmore {
@@ -202,5 +186,6 @@
 		background-color: grey;
 		width:100%;
 		line-height: 50px;
+		text-align: center;
 	}
 </style>

@@ -36,7 +36,6 @@ class ArticleController {
         console.log('updateArticle')
         if (verifyTk === true) {
             let articles = await ArticleModel.updateArticle(data);
-            console.log('updateArticle', articles)
             if (articles) {
                 ctx.body = {
                     message: '文章更新成功',

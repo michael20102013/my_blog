@@ -4,7 +4,7 @@
         <div id="homeContent">
             <router-view></router-view>
         </div>
-        <div id="bottom">刺激战场皇冠高手带你吃鸡!</div>
+        <div id="bottom">刺激战场王牌高手带你吃鸡!</div>
     </div>
 </template>
 <script>

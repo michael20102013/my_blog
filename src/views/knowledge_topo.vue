@@ -1,5 +1,5 @@
 <template>
-    <div id="knowledgeWrapper" style="min-width: 1200px;min-height:800px;">
+    <div id="knowledgeWrapper" style="width: 1000px;height:1500px;">
 
     </div>
 </template>
@@ -19,29 +19,331 @@
                         "name": "构建生态",
                         "children": [
                             {
-                                "name": "cluster",
-                                "children": [
-                                    { "name": "AgglomerativeCluster", "value": 3938 },
-                                    { "name": "CommunityStructure", "value": 3812 },
-                                    { "name": "HierarchicalCluster", "value": 6714 },
-                                    { "name": "MergeEdge", "value": 743 }
-                                ]
+                                "name": "webpack",
+                                "children": []
                             },
                             {
-                                "name": "graph",
-                                "children": [
-                                    { "name": "BetweennessCentrality", "value": 3534 },
-                                    { "name": "LinkDistance", "value": 5731 }
-                                ]
+                                "name": "gulp",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "name": "移动开发",
+                        "children": [
+                            {
+                                "name": "android",
+                                "children": []
                             },
                             {
-                                "name": "optimization",
-                                "children": [
-                                    { "name": "AspectRatioBanker", "value": 7074 }
-                                ]
+                                "name": "ios",
+                                "children": []
+                            },
+                            {
+                                "name": "小程序开发",
+                                "children": []
+                            },
+                            {
+                                "name": "react native",
+                                "children": []
+                            }                    
+                        ]
+                    },
+                    {
+                        "name": "全栈开发",
+                        "children": [
+                            {
+                                "name": "nodejs",
+                                "children": []
+                            },
+                            {
+                                "name": "express/koa",
+                                "children": []
+                            },
+                            {
+                                "name": "mongodb",
+                                "children": []
+                            },
+                            {
+                                "name": "java/php/python",
+                                "children": []
+                            },
+                            {
+                                "name": "nginx/apache",
+                                "children": []
+                            },
+                            {
+                                "name": "linux/shell",
+                                "children": []
+                            }                                                                             
+                        ]
+                    },
+                    {
+                        "name": "前端框架",
+                        "children": [
+                            {
+                                "name": "vue",
+                                "children": []
+                            },
+                            {
+                                "name": "angular",
+                                "children": []
+                            },
+                            {
+                                "name": "react",
+                                "children": []
+                            }                                                                           
+                        ]
+                    },
+                    {
+                        "name": "UI框架",
+                        "children": [
+                            {
+                                "name": "elementUI",
+                                "children": []
+                            },
+                            {
+                                "name": "bootstrap",
+                                "children": []
+                            }                                                                          
+                        ]
+                    },
+                    {
+                        "name": "组件库",
+                        "children": [
+                            {
+                                "name": "echarts",
+                                "children": []
+                            },
+                            {
+                                "name": "commonJS/AMD/CMD",
+                                "children": []
+                            },
+                            {
+                                "name": "requireJS",
+                                "children": []
+                            }                                                                          
+                        ]
+                    },
+                    {
+                        "name": "工具和调试",
+                        "children": [
+                            {
+                                "name": "wireshark",
+                                "children": []
+                            },
+                            {
+                                "name": "nodemon",
+                                "children": []
+                            },
+                            {
+                                "name": "requireJS",
+                                "children": []
+                            },
+                            {
+                                "name": "chrome inspect/vorlon/",
+                                "children": []
+                            }                                                                                          
+                        ]
+                    },
+                    {
+                        "name": "项目管理",
+                        "children": [
+                            {
+                                "name": "开发规范",
+                                "children": []
+                            },
+                            {
+                                "name": "开发方案",
+                                "children": []
+                            },
+                            {
+                                "name": "测试方案",
+                                "children": []
+                            },
+                            {
+                                "name": "项目部署",
+                                "children": []
+                            }                                                                                          
+                        ]
+                    },
+                    {
+                        "name": "技术趋势",
+                        "children": [
+                            {
+                                "name": "PWA",
+                                "children": []
+                            }                                                                                         
+                        ]
+                    },
+                    {
+                        "name": "其他技能",
+                        "children": [
+                            {
+                                "name": "can i use",
+                                "children": []
+                            },
+                            {
+                                "name": "github",
+                                "children": []
+                            },
+                            {
+                                "name": "svn/git/totoriseGit",
+                                "children": []
+                            },
+                            {
+                                "name": "CDN",
+                                "children": []
+                            },
+                            {
+                                "name": "SEO",
+                                "children": []
+                            },
+                            {
+                                "name": "pagespeed",
+                                "children": []
+                            },
+                            {
+                                "name": "网络/资源/协议/存储",
+                                "children": []
+                            } 
+                        ]
+                    },
+                    {
+                        "name": "安全",
+                        "children": [
+                            {
+                                "name": "Sandbox",
+                                "children": []
+                            },
+                            {
+                                "name": "XSS",
+                                "children": []
+                            },
+                            {
+                                "name": "CORS/CSRF",
+                                "children": []
+                            },
+                            {
+                                "name": "SQL注入",
+                                "children": []
+                            },
+                            {
+                                "name": "https",
+                                "children": []
+                            },
+                            {
+                                "name": "pagespeed",
+                                "children": []
+                            },
+                            {
+                                "name": "网络/资源/协议/存储",
+                                "children": []
+                            } 
+                        ]
+                    },
+                    {
+                        "name": "CSS预处理器",
+                        "children": [
+                            {
+                                "name": "less",
+                                "children": []
+                            },
+                            {
+                                "name": "sass",
+                                "children": []
+                            },
+                            {
+                                "name": "CORS/CSRF",
+                                "children": []
+                            },
+                            {
+                                "name": "SQL注入",
+                                "children": []
+                            },
+                            {
+                                "name": "https",
+                                "children": []
+                            },
+                            {
+                                "name": "pagespeed",
+                                "children": []
+                            },
+                            {
+                                "name": "网络/资源/协议/存储",
+                                "children": []
+                            } 
+                        ]
+                    },
+                    {
+                        "name": "代码质量",
+                        "children": [
+                            {
+                                "name": "eslint/jslint/tslint",
+                                "children": []
+                            } 
+                        ]
+                    },
+                    {
+                        "name": "http协议",
+                        "children": [
+                            {
+                                "name": "URI",
+                                "children": []
+                            },
+                            {
+                                "name": "Authentication",
+                                "children": []
+                            },
+                            {
+                                "name": "Request",
+                                "children": []
+                            },
+                            {
+                                "name": "Response",
+                                "children": []
+                            },
+                            {
+                                "name": "server push",
+                                "children": []
+                            },
+                            {
+                                "name": "WebSocket",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "name": "国内前端团队学习网站",
+                        "children": [
+                            {
+                                "name": "http://taobaofed.org/",
+                                "children": []
+                            },
+                            {
+                                "name": "http://fex.baidu.com/",
+                                "children": []
+                            },
+                            {
+                                "name": "http://www.alloyteam.com/",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "name": "js编译语言",
+                        "children": [
+                            {
+                                "name": "TypeScript",
+                                "children": []
+                            },
+                            {
+                                "name": "JSX(facebook)",
+                                "children": []
                             }
                         ]
                     }
+                    
                 ]
             }
 
@@ -55,7 +357,7 @@
                 let myChart = echarts.init(document.getElementById('knowledgeWrapper'));
                 // 绘制图表
                 echarts.util.each(obj.data.children, function (datum, index) {
-                    index % 2 === 0 && (datum.collapsed = true);
+                    datum.collapsed = false
                 });
                 let option;
                 myChart.setOption(option = {
@@ -70,7 +372,7 @@
                             data: [obj.data],
 
                             top: '1%',
-                            left: '7%',
+                            left: '12%',
                             bottom: '1%',
                             right: '20%',
 
@@ -81,7 +383,7 @@
                                     position: 'left',
                                     verticalAlign: 'middle',
                                     align: 'right',
-                                    fontSize: 9
+                                    fontSize: 12
                                 }
                             },
 
@@ -109,4 +411,10 @@
     }
 </script>
 <style lang="less" scoped>
+    #knowledgeWrapper{
+        background-color: #fff;
+        margin: 0 auto;
+        margin-bottom:50px;
+        margin-top:50px;
+    }
 </style>

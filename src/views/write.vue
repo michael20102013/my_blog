@@ -25,8 +25,8 @@
                             <el-row>
                                 <el-col :span="20" class="artilce-title">
                                     <div @click="selected(index)">
-                                        <h1>{{article.title}}</h1>
-                                        <h3 class="note-content">{{article.content|delHtmlTag}}</h3>
+                                        <div class="article-title-h1">{{article.title}}</div>
+                                        <div class="note-content" v-html = "article.content"></div>
                                     </div>
                                 </el-col>
                                 <el-col :span="4">
@@ -47,10 +47,9 @@
                         <el-button class="myfont fa fa-mail-forward small-font release" @click="releaseArticle"></el-button>
                     </el-header>
                     <el-main class="content-content">
-                        <div id="writeArea" class="writeArea"></div>
+                        <div id="editorMenu" style="font-size: 20px;" class="editorMenu"></div>  
+                        <div id="writeArea" class="writeArea" @onKeyUp = 'saveArticle()'></div>
                     </el-main>
-                    <el-footer>
-                    </el-footer>
                 </el-container>
             </el-col>
         </el-row>
@@ -131,14 +130,16 @@
                 let content = {
                     content: "",
                     update_time: t.time1(),
+                    create_time: t.time1(),
                     title:t.time1()
                 }
                 this.$http({
                     url: '/api/edit/articles',
                     method: 'post',
                     data: content
-                }).then(
-                    this.getArticles()
+                }).then((res) => {
+                        this.getArticles()
+                    }
                 )
             },
             //获取文章
@@ -156,6 +157,7 @@
                             this.editorContent = this.articles[this.defaultIndex].content;
                             this.title = this.articles[this.defaultIndex].title;
                             this.initWangEditor(this.editorContent);
+                            this.recomputeEditCotent();
                         } else {
                             alert('获取文章失败！')
                         }
@@ -163,7 +165,8 @@
             },
             //初始化文章内容
             initWangEditor(content = '') {
-                let editor2 = new wangEditor('#writeArea');
+                let editor2 = new wangEditor('#editorMenu', '#writeArea');
+                // let editor2 = new wangEditor('#writeArea');
                 editor2.customConfig.onchange = (html) => {
                     this.editorContent = html;
                 }
@@ -172,16 +175,29 @@
             },
             changeTitle(value){
                 this.title = value;
+            },
+            saveArticle() {
+                console.log(123);
+            },
+            //重新绘制文编区高度
+            recomputeEditCotent() {
+                let h = jQuery("#write").css('height').split('px')[0] - 180;
+                jQuery('#writeArea').css('height', h + 'px');
+                jQuery(window).resize(function () {
+                    let h = jQuery("#write").css('height').split('px')[0] - 180;
+                    jQuery('#writeArea').css('height', h + 'px');
+                })                
+            },
+            delHtmlTag(str) {
+                //去掉所有的html标记
+                return str.replace(/<[^>]+>/g, "");
             }            
         },
         computed: {
-
+            
         },
         filters: {
-            delHtmlTag: function (str = '') {
-                //去掉所有的html标记
-                return str.replace(/<[^>]+>/g, "");
-            }
+
         }
     }
 </script>
@@ -218,7 +234,7 @@
         min-width: 800px;
         height: 100%;
         float: left;
-        background-color: blanchedalmond;
+        background-color: #fff;
     }
 
     .backBtn {
@@ -266,7 +282,7 @@
         }
     }
     #write .el-col{
-        overflow: auto
+        overflow: hidden;
     }
     .el-header {
         padding-top: 15px;
@@ -349,7 +365,7 @@
         }
     }
 
-    .writeArea {
+    #writeArea {
         color: #333;
         font-size: 16px;
         font-weight: 400;
@@ -359,12 +375,15 @@
         min-height: 100%;
         -webkit-box-sizing: border-box;
         box-sizing: border-box;
-        padding: 0px 40px 80px;
-        min-height: 300px;
-        ;
-        .w-e-text-container {
-            height: 600px !important;
+        width: 100%;
+        height: 600px;
+        background-color: #fff;
+        .w-e-text{
+            background-color: #fff !important;
         }
+    }
+    .w-e-toolbar{
+        background-color:#D9D9D9;
     }
     .note-content {
         text-overflow: ellipsis;
@@ -373,10 +392,26 @@
         -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
         display: -webkit-box;
+        max-height:48px;
     }
 
     .artilce-title {
         cursor: pointer;
+    }
+    .article-title-h1 {
+        text-overflow: ellipsis;
+        max-width: 275px;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+        max-height:48px;
+        font-size: 2em;
+        -webkit-margin-before: 0.67em;
+        -webkit-margin-after: 0.67em;
+        -webkit-margin-start: 0px;
+        -webkit-margin-end: 0px;
+        font-weight: bold;
+        overflow: hidden;      
     }
     #contentTitle{
             background: transparent;
@@ -398,5 +433,13 @@
             text-overflow: ellipsis;
             white-space: nowrap;
             height: 50px;
+    }
+</style>
+<style lang="less">
+    #write .w-e-toolbar .w-e-menu i {
+        line-height: 26px !important;
+    }
+    #write .w-e-text {
+        overflow: auto;
     }
 </style>

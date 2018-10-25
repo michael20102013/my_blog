@@ -165,7 +165,8 @@
             },
             //初始化文章内容
             initWangEditor(content = '') {
-                let editor2 = new wangEditor('#editorMenu', '#writeArea');
+                //let editor2 = new wangEditor('#editorMenu', '#writeArea');
+                let editor2 = new wangEditor('#writeArea');
                 // let editor2 = new wangEditor('#writeArea');
                 editor2.customConfig.onchange = (html) => {
                     this.editorContent = html;

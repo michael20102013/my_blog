@@ -152,6 +152,7 @@
 		width:580px;
 		height: 76px;
 		line-height: 25px;
+		text-align: left;
 	}
 	.font-orange {
 		&:hover {

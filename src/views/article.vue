@@ -77,7 +77,7 @@
         overflow: hidden;         
     }
     .article-content {
-        height: 600px;
+       text-align: left;
     }
     #article{
         width: 1000px;

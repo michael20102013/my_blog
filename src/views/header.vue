@@ -187,7 +187,7 @@
 		overflow: hidden;
 		line-height: 50px;
 		font-family: Microsoft YaHei;
-		background-color: #32373b;
+		background-color: #409EFF;
 		color: white;
 		height: 50px;		
 		.center {

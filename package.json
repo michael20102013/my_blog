@@ -13,7 +13,7 @@
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
     "build": "node build/build.js",
     "mock": "json-server --watch mock/db.json -p 3003",
-    "mockdev": "concurrently \"npm run dev\" \"npm run mock\" \"nodemon app.js\""
+    "mockdev": "concurrently \"npm run dev\""
   },
   "dependencies": {
     "axios": "^0.18.0",

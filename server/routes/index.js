@@ -4,6 +4,7 @@ const ArticleController = require('../controller/article.js');
 const router = new Router({
 	prefix: '/api'
 });
+
 //用户处理
 router.post('/', UserController.postLogin)
 router.post('/login', UserController.postLogin)

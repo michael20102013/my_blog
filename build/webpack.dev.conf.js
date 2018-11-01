@@ -50,6 +50,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     watchOptions: {
       poll: config.dev.poll,
     },
+    disableHostCheck: true,
     before(app){
       app.use('/mock',Router);
     }

@@ -38,7 +38,6 @@
 <script>
 	import Qs from 'qs';
 	import jwt from 'jsonwebtoken';
-	const secret = require('../../server/config/secret.json');
 	export default{
 		data(){
 			return{
@@ -123,7 +122,6 @@
 						let _res = res.data;
 						if(_res.cc === 0){
 							let token = _res.token;							
-							let payload = jwt.verify(token, secret.sign);
 							alert("登录成功");
 							this.islogin = true;
 							this.$store.commit('changeTologin');
@@ -189,7 +187,7 @@
 		overflow: hidden;
 		line-height: 50px;
 		font-family: Microsoft YaHei;
-		background-color: #32373b;
+		background-color: #409EFF;
 		color: white;
 		height: 50px;		
 		.center {

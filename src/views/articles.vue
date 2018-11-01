@@ -3,49 +3,27 @@
 		<el-container>
 			<el-main>
 				<el-container v-for="(item, index) in articles">
-					<el-aside width="100px">
-						<div class="el-aside-time">
-							{{item.update_time}}
-						</div>
-					</el-aside>
 					<el-main>
 						<el-container class="article-container">
 							<el-header>
 								<span class="hover font-orange" @click ="enterArticle(item._id)">{{item.title}}</span>				
 							</el-header>
 							<el-main>
-								<div class="catalog" v-html = item.content>
+								<!-- <div class="catalog" v-html = item.content> -->
+								<div class="catalog">{{item.content | delHtmlTag}}
 								</div>
-							</el-main>
+							</el-main>					
+							<el-footer>
+								<span>更新时间：{{item.update_time}}</span> 
+							</el-footer>
 						</el-container>
 					</el-main>
+
 				</el-container>
-				<!-- <el-container>
-					<el-footer height=''>
-							<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[3, 20, 30, 40]"
-								:page-size="3" layout="total, prev, pager, next, jumper" :total="total">
-							</el-pagination>
-					</el-footer>
-				</el-container> -->
 				<div id="readmore" @click = "readmore()">阅读更多</div>
 			</el-main>
 			<el-aside width="200px">排行榜开发中</el-aside>
 		</el-container>
-		<!-- <el-container v-for="(item, index) in articles">
-			<el-header>
-				<h1>item.title</h1>
-			</el-header>
-			<el-main>
-				item.content
-			</el-main>
-			<el-footer></el-footer>
-		</el-container> -->
-		<!-- <div class="block">
-			<span class="demonstration">完整功能</span>
-			<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage4" :page-sizes="[10, 20, 30, 40]"
-			 :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="400">
-			</el-pagination>
-		</div> -->
 	</div>
 </template>
 <script>
@@ -137,13 +115,8 @@
 		background-color: #AAAAAA;
 		margin-top:20px;
 	}
-	.el-header {
-		text-align: center;
-		line-height: 60px;
-	}
 	.article-container {
 		border-top: 1px #F4F4F4 solid;
-		border-bottom: 1px #F4F4F4 solid;
 	}
 	.catalog {	
 		/* white-space: nowrap; */
@@ -152,6 +125,7 @@
 		width:580px;
 		height: 76px;
 		line-height: 25px;
+		text-align: left;
 	}
 	.font-orange {
 		&:hover {
@@ -162,17 +136,16 @@
 		padding-top:30px;
 	}
     .el-header {
-        background-color: #B3C0D1;
+        background-color: #fff;
         color: #333;
-        text-align: center;
+        text-align: left;
 		line-height: 60px;
 		font-size: 30px;
 		font-family: "microsoft yahei"
 	}
     .el-footer {
-        background-color: #F5F5D5;
         color: #333;
-        text-align: center;
+        text-align: left;
         line-height: 60px;
     }	
 

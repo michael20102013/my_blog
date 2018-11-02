@@ -1,16 +1,18 @@
 <template>
-	<div id="header">	
-		<ul class="right">
-			<li>
-				<span class="writeText" @click="write">{{writeText}}</span>				
-			</li>			
-			<li>
-				<span class="login" @click="changeLoginStatus">{{loginUser}}</span>
-			</li>
-		</ul>
-		<div class="logo">
-			<span>iWangcx</span>
-		</div>		
+	<div id="header">
+		<div id="menu">
+			<ul class="right">
+				<li>
+					<span class="writeText" @click="write">{{writeText}}</span>				
+				</li>			
+				<li>
+					<span class="login" @click="changeLoginStatus">{{loginUser}}</span>
+				</li>
+			</ul>
+			<div class="logo">
+				<span>iWangcx</span>
+			</div>		
+		</div>	
 		<ul class="center">
 			<li v-for = "(item, index) in navs" :class="{active:dealLink(item.link) === selectIndex}" @click="setIndex(index, item.link)">{{item.name}}</li>		
 		</ul>			
@@ -182,13 +184,16 @@
 	a{
 		text-decoration: none;
 		color:#fff; 
+	}
+	#menu {
+		overflow: hidden;
 	}	
 	#header{
 		overflow: hidden;
 		line-height: 50px;
 		font-family: Microsoft YaHei;
-		background-color: #409EFF;
-		color: white;
+		background-color: #fff;
+		color: #303133;
 		height: 50px;		
 		.center {
 			margin:auto;
@@ -205,7 +210,7 @@
 			}
 			li:hover {
 				cursor: pointer;
-				background-color: #fff;
+				background-color:#F5F5F5;
 				color: black;
 			}
 		}
@@ -247,6 +252,7 @@
 		line-height: 50px;
 		margin-left: 50px;
 		float: left;
+		color:#E6A23C
 	}
 	.active {
 		background-color: #fff;

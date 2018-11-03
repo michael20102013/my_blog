@@ -2,27 +2,27 @@
 	<div class="mainWrapper">
 		<el-container>
 			<el-main>
-				<el-container v-for="(item, index) in articles">
-					<el-main>
-						<el-container class="article-container">
-							<el-header>
-								<span class="hover font-orange" @click ="enterArticle(item._id)">{{item.title}}</span>				
-							</el-header>
-							<el-main>
-								<!-- <div class="catalog" v-html = item.content> -->
-								<div class="catalog">{{item.content | delHtmlTag}}
-								</div>
-							</el-main>					
-							<el-footer>
-								<span>更新时间：{{item.update_time}}</span> 
-							</el-footer>
-						</el-container>
-					</el-main>
-
+				<el-container v-for="(item, index) in articles" :key = "index">
+					<el-container :class="index !==0 ? 'article-container' : false">
+						<el-header>
+							<span class="hover font-orange" @click="enterArticle(item._id)">{{item.title}}</span>
+						</el-header>
+						<el-main>
+							<div class="catalog">{{item.content | delHtmlTag}}
+							</div>
+						</el-main>
+						<el-footer>
+							<span>更新时间：{{item.update_time}}</span>
+						</el-footer>
+					</el-container>
 				</el-container>
 				<div id="readmore" @click = "readmore()">阅读更多</div>
 			</el-main>
-			<el-aside width="200px">排行榜开发中</el-aside>
+			<el-aside width="200px" class="rank-list">
+			<el-row>
+				<el-col :span="24">排行榜开发中</el-col>
+			</el-row>				
+			</el-aside>
 		</el-container>
 	</div>
 </template>
@@ -34,30 +34,16 @@
 				pagesize: 7,//每页的数据条数
 				currentPage: 1,//默认开始页面	
 				articles: [],
-				limit: 3
+				limit: 5
 			}
 		},
 		created() {
 			let content = {
-				limit: 3
+				limit: 5
 			}
 			this.getArticles(undefined, content);
 		},
 		methods: {
-			handleSizeChange(val) {
-				console.log(`每页 ${val} 条`);
-			},
-			handleCurrentChange(val) {
-				this.currentPage = val;
-				console.log(`当前页: ${val}`);
-				let skip = (val-1) * 3;
-				let content = {
-					skip : skip,
-					limit: this.limit
-				}
-				this.getArticles(undefined, content)
-
-			},
 			//获取文章
 			getArticles(id, content) {
 				this.$http({
@@ -87,18 +73,22 @@
 			},
 			readmore() {
 				let skip = 0;
-				this.limit = this.limit + 3;
+				this.limit = this.limit + 5;
 				let content = {
 					skip : skip,
 					limit: this.limit
 				}
-				this.getArticles(undefined, content)				
+				this.getArticles(undefined, content)
 			}
 		},
 		filters: {
 			delHtmlTag: function (str = '') {
+				let html;
 				//去掉所有的html标记
-				return str.replace(/<[^>]+>/g, "");
+				html = str.replace(/<[^>]+>/g, "");
+				//去掉&nbsp
+				html = html.replace(/&nbsp;*/g, " ");
+				return html;
 			}
 		}
 	}
@@ -126,6 +116,7 @@
 		height: 76px;
 		line-height: 25px;
 		text-align: left;
+		color:#999;
 	}
 	.font-orange {
 		&:hover {
@@ -156,9 +147,13 @@
 	}
 	#readmore {
 		cursor: pointer;
-		background-color: grey;
+		background-color: #A5A5A5;
 		width:100%;
 		line-height: 50px;
 		text-align: center;
+		border-radius: 20px;
+	}
+	.rank-list {
+		padding: 20px;
 	}
 </style>

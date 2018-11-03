@@ -1,21 +1,25 @@
 <template>
 	<div id="header">
-		<div id="menu">
-			<ul class="right">
-				<li>
-					<span class="writeText" @click="write">{{writeText}}</span>				
-				</li>			
-				<li>
-					<span class="login" @click="changeLoginStatus">{{loginUser}}</span>
-				</li>
-			</ul>
+		<div class="nav-limit">
 			<div class="logo">
 				<span>iWangcx</span>
-			</div>		
-		</div>	
-		<ul class="center">
-			<li v-for = "(item, index) in navs" :class="{active:dealLink(item.link) === selectIndex}" @click="setIndex(index, item.link)">{{item.name}}</li>		
-		</ul>			
+			</div>			
+			<a href="#" class="right">
+				<span class="login" @click="changeLoginStatus">{{loginUser}}</span>
+				<span class="writeText" @click="write">{{writeText}}</span>	
+			</a>	
+			<div id="menu">
+				<ul class="center">
+					<li v-for = "(item, index) in navs" :class="{active:dealLink(item.link) === selectIndex, 'menu-hover': true}" @click="setIndex(index, item.link)">{{item.name}}</li>
+					<li class="search">
+						<input type="text" id="search" value="" autocomplete="off" placeholder="搜索" class="search-input">
+						<a href="#">
+							<i class="search-icon fa fa-search"></i>
+						</a>
+					</li>
+				</ul>						
+			</div>
+		</div>
 		<!-- 对话框组件-start -->
 		<el-row>
 				<el-col :span="12">
@@ -184,61 +188,64 @@
 	a{
 		text-decoration: none;
 		color:#fff; 
-	}
-	#menu {
-		overflow: hidden;
 	}	
 	#header{
+		position: relative;
 		overflow: hidden;
-		line-height: 50px;
+		/* line-height: 50px; */
 		font-family: Microsoft YaHei;
 		background-color: #fff;
 		color: #303133;
-		height: 50px;		
+		height: 50px;
+		border-bottom: 1px #F4F4F4 solid;
+		#menu {
+			overflow: hidden;
+			width:1000px;
+			margin: 0 auto;
+		}	
 		.center {
-			margin:auto;
-			width: 500px;
+			float:left;
+			width: 800px;
 			position: relative;
 			overflow: hidden;
+			padding-left: 20px;
 			li{
 				float: left;
 				position: relative;
-				/* margin-right: 20px; */
 				list-style: none;
 				width: 80px;
 				text-align: center;
-			}
-			li:hover {
-				cursor: pointer;
-				background-color:#F5F5F5;
-				color: black;
+				list-style: none;
+				line-height:50px;
 			}
 		}
 		.right{
 			float: right;
-			width: 200px;
-			overflow: hidden;
-			li{
-				float: right;
-				margin-right: 50px;
-				list-style: none;
-			}
+			width:100px;
+			line-height: 50px;
 		}
 		.login{
-			color:#fff;
+			color:#303133;
 			font-size: 14px;
+			margin-right: 15px;
 			&:hover{
 				color:#00C1DE;
 				cursor: pointer;
 			}			
 		}
 		.writeText{
-			color:#fff;
+			color:#333;
 			font-size: 14px;
 			&:hover{
 				color:#00C1DE;
 				cursor: pointer;
-			}			
+			}		
+		}
+		.nav-limit {
+			max-width: 1440px;
+			min-width: 768px;
+			margin: 0 auto;
+			overflow: hidden;
 		}
 	}
 	.nav{
@@ -250,12 +257,59 @@
 		font-weight: bold;
 		font-size: 16px;
 		line-height: 50px;
-		margin-left: 50px;
 		float: left;
-		color:#E6A23C
+		color:#E6A23C;
+		width: 100px;
 	}
 	.active {
-		background-color: #fff;
+		background-color: #F5F5F5;
 		color:black;
-	} 
+	}
+	.menu-hover:hover{
+		color:rgb(8, 8, 8);
+		cursor: pointer;
+		background-color:#F5F5F5;
+	}
+	.search {
+		float:right !important;
+		width: 260px !important;
+		line-height: 50px;
+		a {
+			position: absolute;
+			top: 9px;
+			right: 11px;
+			width: 32px;
+			height: 32px!important;
+			line-height: normal!important;
+			padding: 0!important;
+			color: #969696!important;
+			text-align: center;
+			background-color:#ECECEC;
+			border-radius:40px;
+		}	
+	}
+	.search-input {
+		font-size: 14px;
+		border: 1px solid #eee;
+		border-radius: 40px;
+		background: #eee;
+		width: 240px;
+		line-height: 30px;
+		box-sizing: border-box;
+		padding-left: 15px;
+		outline: none;
+		color:#909399;
+		position: relative;
+		&::-webkit-input-placeholder {
+			color:#909399;
+		}
+	}
+	.search-icon {
+		margin-top: 8px;
+		margin-left: -7px;
+		&:before {
+			background-color: #ECECEC;
+			opacity: 1;
+		}
+	}
 </style>

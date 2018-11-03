@@ -26,10 +26,10 @@
 <style lang="less" scoped>
     #bottom{
         height: 100px;
-        background-color: grey;
+        background-color: #fff;
         line-height: 100px;
         text-align: center;
         font-size: 20px;
-        color:#fff;
+        color:#606266;
     }
 </style>

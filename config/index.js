@@ -12,7 +12,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api':{
-        target:"http://www.iwangcx.com:9527",
+        // target:"http://www.iwangcx.com:9527",
+        target:"http://localhost:9527",
         changeOrigin:true,
         pathRewrite:{
           '^/api': '/api'

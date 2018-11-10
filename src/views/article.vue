@@ -5,6 +5,16 @@
                 <el-header id="article-title">{{article.title}}</el-header>
                 <el-header class="tag" v-html = "tag"></el-header>
                 <el-main class= "article-content" v-html="article.content"></el-main>
+                <el-main class="bottom">
+                    <div :class="{like: true, liked: liked}" @click="setLikeStatus">
+                        <span :class ="{'like-font': true, liked:liked}">喜欢</span><i :class="{'like-icon': true, fa: true, 'fa-heart-o': true, liked:liked}"></i>
+                    </div>
+                    <el-input
+                        type="textarea"
+                        :autosize="true"
+                        placeholder="请输入内容">
+                    </el-input>                  
+                </el-main>
             </el-main>
             <el-aside width="200px">排行榜开发中</el-aside>
         </el-container>
@@ -16,7 +26,8 @@
             return {
                 article:'',
                 text:'',
-                tag:''
+                tag:'',
+                liked:false
             }
         },
         created() {
@@ -48,14 +59,17 @@
                 let _str = str.substring(0, str.length-1);
                 console.log('_str', _str)
                 return _str
-            }            
+            },
+            setLikeStatus() {
+                this.liked = !this.liked;
+                
+            }
         }
     }
 </script>
 <style lang="less" scoped>
     .el-header,
     .el-footer {
-        background-color: #B3C0D1;
         color: #333;
         text-align: center;
         line-height: 60px;
@@ -79,7 +93,38 @@
     .article-content {
        text-align: left;
     }
-    #article{
+    #article {
         width: 1000px;
+    }
+    .like {
+        font-size: 24px;
+        border:1px solid #CC0000;
+        overflow: hidden;
+        width: 150px;
+        border-radius: 40px;
+        text-align: center;
+        float: left;
+        cursor: pointer;
+        .like-font {
+            color: #CC0000;
+            margin-right:15px;
+            margin-left:auto;
+        }
+        .like-icon {
+            color: #CC0000;
+            line-height: 60px;
+        }
+    }
+    .bottom {
+            margin-top: 30px;
+            padding: 20px;
+
+    }
+    .liked {
+        color: #fff !important;
+        background-color: #CC0000;
+    }
+    .el-main {
+        /* overflow: hidden; */
     }
 </style>

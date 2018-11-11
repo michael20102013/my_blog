@@ -1,23 +1,17 @@
 //时间格式化
 function MYTime() {
-    this.time1 = function(){
-        let d=new Date()
-        let day=d.getDate()
-        let month=d.getMonth() + 1
-        let year=d.getFullYear()
-        return year + '/' + month + '/' + day        
+    this.time = function () {
+        let d = new Date();
+        let hours = d.getHours();
+        let minute = d.getMinutes();
+        let day = d.getDate();
+        let month = d.getMonth() + 1;
+        let year = d.getFullYear();
+        // return year + '/' + month + '/' + day
+        return `${year}/${month}/${day}/${hours}:${minute}`
     }
 }
-// class MYTime{
-//     constructor(){}
-//     time1(){
-//         let d=new Date()
-//         let day=d.getDate()
-//         let month=d.getMonth() + 1
-//         let year=d.getFullYear()
-//         return year + '/' + month + '/' + day                 
-//     }    
-// }
- module.exports = {
+
+export {
     MYTime
 }

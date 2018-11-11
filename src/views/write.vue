@@ -90,7 +90,7 @@
                 let content = {
                     _id: this.editingID,
                     content: this.editorContent,
-                    update_time: t.time1(),
+                    update_time: t.time(),
                     title:this.title
                 }
                 this.$http({
@@ -128,10 +128,16 @@
             addArticle() {
                 let t = new MYTime();
                 let content = {
+                    page_view_time: [],
+                    page_view_count: 0,
+                    like_person: [],
+                    like_count: 0,
                     content: "",
-                    update_time: t.time1(),
-                    create_time: t.time1(),
-                    title:t.time1()
+                    update_time: t.time(),
+                    create_time: t.time(),
+                    title:t.time(),
+                    "user_view": [],
+                    "comment": []
                 }
                 this.$http({
                     url: '/api/edit/articles',

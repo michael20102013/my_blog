@@ -6,14 +6,38 @@
                 <el-header class="tag" v-html = "tag"></el-header>
                 <el-main class= "article-content" v-html="article.content"></el-main>
                 <el-main class="bottom">
-                    <div :class="{like: true, liked: liked}" @click="setLikeStatus">
-                        <span :class ="{'like-font': true, liked:liked}">喜欢</span><i :class="{'like-icon': true, fa: true, 'fa-heart-o': true, liked:liked}"></i>
-                    </div>
-                    <el-input
-                        type="textarea"
-                        :autosize="true"
-                        placeholder="请输入内容">
-                    </el-input>                  
+                    <el-row>
+                        <el-col :span="24">
+                            <div :class="{like: true, liked: liked}" @click="setLikeStatus">
+                                <span :class="{'like-font': true, liked:liked}">喜欢</span><i :class="{'like-icon': true, fa: true, 'fa-heart-o': true, liked:liked}"></i>
+                            </div>
+                        </el-col>
+                    </el-row>      
+                    <el-row>
+                        <el-col :span="24" class="comment">
+                                <el-input
+                                id="comment"
+                                type="textarea"
+                                :autosize="{minRows: 6}"
+                                placeholder="写下你的评论">
+                            </el-input> 
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="8" class="comment ">
+                            <el-input id="name" v-model="name" placeholder="请输入你的大名（必填）"></el-input>     
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="9" class="comment ">
+                            <el-input id="email" v-model="email" placeholder="请输入你的邮箱地址（必填， 不公开）"></el-input>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="8" class="comment ">
+                            <el-button type="primary">评论</el-button>
+                        </el-col>
+                    </el-row>
                 </el-main>
             </el-main>
             <el-aside width="200px">排行榜开发中</el-aside>
@@ -27,7 +51,9 @@
                 article:'',
                 text:'',
                 tag:'',
-                liked:false
+                liked:false,
+                name:'',
+                email:''
             }
         },
         created() {
@@ -57,7 +83,6 @@
             },
             rmQuotation (str) {
                 let _str = str.substring(0, str.length-1);
-                console.log('_str', _str)
                 return _str
             },
             setLikeStatus() {
@@ -126,5 +151,8 @@
     }
     .el-main {
         /* overflow: hidden; */
+    }
+    .comment {
+        margin-top: 30px;
     }
 </style>

@@ -5,14 +5,17 @@
 				<el-container v-for="(item, index) in articles" :key = "index">
 					<el-container :class="index !==0 ? 'article-container' : false">
 						<el-header>
-							<span class="hover font-orange" @click="enterArticle(item._id)">{{item.title}}</span>
+							<span class="hover font-orange" @click="enterArticle(item._id, item.page_view_count)">{{item.title}}</span>
 						</el-header>
 						<el-main>
 							<div class="catalog">{{item.content | delHtmlTag}}
 							</div>
 						</el-main>
 						<el-footer>
-							<span>更新时间：{{item.update_time}}</span>
+							<el-row>
+								<el-col :span="6"><span>更新时间：{{item.update_time}}</span></el-col>
+								<el-col :span="6"><span>浏览量：{{item.page_view_count}}</span></el-col>
+							</el-row>							
 						</el-footer>
 					</el-container>
 				</el-container>
@@ -27,6 +30,7 @@
 	</div>
 </template>
 <script>
+	import{ MYTime} from '../common/common.js';
 	export default {
 		data() {
 			return {
@@ -61,7 +65,9 @@
 						}
 					})
 			},
-			enterArticle(id) {
+			//进入文章
+			async enterArticle(id, page_view_count) {
+				await this.setViewInfo(id, page_view_count);
 				let location = {
 					path: `/home/article`,
 					name: 'article',
@@ -71,6 +77,7 @@
 				}
 				this.$router.push(location)
 			},
+			//阅读更多
 			readmore() {
 				let skip = 0;
 				this.limit = this.limit + 5;
@@ -79,6 +86,31 @@
 					limit: this.limit
 				}
 				this.getArticles(undefined, content)
+			},
+			//设置浏览信息
+			async setViewInfo(id, page_view_count) {
+				let t = new MYTime();
+				let count = parseInt(page_view_count) + 1;
+				let content = {
+					_id: id,
+					page_view_time:t.time(),
+					page_view_count: count
+				}
+                await this.$http({
+                    url: '/api/pageview/articles',
+                    method: 'put',
+                    data: content
+                })
+                    .then(
+                        (res) => {
+                            let _res = res.data;
+                            if (_res.cc === 0) {
+                                // console.log('添加pv成功')
+                            } else {
+                                // console.log('添加pv失败')
+                            }
+                        }
+                    )				
 			}
 		},
 		filters: {

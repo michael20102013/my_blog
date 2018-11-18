@@ -61,13 +61,13 @@
 					name:'首页',
 					link:'/article1'
 				}, {
-					name:'技术',
+					name:'工具',
 					link:'/article2'
 				}, {
 					name:'专题',
 					link:'/home/subject'
 				}, {
-					name:'作品',
+					name:'项目',
 					link:'/article4'
 				}, {
 					name:'文章',

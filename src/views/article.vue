@@ -5,39 +5,41 @@
                 <el-header id="article-title">{{article.title}}</el-header>
                 <el-header class="tag" v-html = "tag"></el-header>
                 <el-main class= "article-content" v-html="article.content"></el-main>
-                <el-main class="bottom">
-                    <el-row>
-                        <el-col :span="24">
-                            <div :class="{like: true, liked: liked}" @click="setLikeStatus">
-                                <span :class="{'like-font': true, liked:liked}">喜欢</span><i :class="{'like-icon': true, fa: true, 'fa-heart-o': true, liked:liked}"></i>
-                            </div>
-                        </el-col>
-                    </el-row>      
-                    <el-row>
-                        <el-col :span="24" class="comment">
-                                <el-input
-                                id="comment"
-                                type="textarea"
-                                :autosize="{minRows: 6}"
-                                placeholder="写下你的评论">
-                            </el-input> 
-                        </el-col>
-                    </el-row>
-                    <el-row>
-                        <el-col :span="8" class="comment ">
-                            <el-input id="name" v-model="name" placeholder="请输入你的大名（必填）"></el-input>     
-                        </el-col>
-                    </el-row>
-                    <el-row>
-                        <el-col :span="9" class="comment ">
-                            <el-input id="email" v-model="email" placeholder="请输入你的邮箱地址（必填， 不公开）"></el-input>
-                        </el-col>
-                    </el-row>
-                    <el-row>
-                        <el-col :span="8" class="comment ">
-                            <el-button type="primary">评论</el-button>
-                        </el-col>
-                    </el-row>
+                <el-main class="bottom">                 
+                    <el-form :model='ruleForm' status-icon :rules="rules" ref='ruleForm' hide-required-asterisk='true'>
+                            <el-row>
+                                <el-col :span='24'>
+                                    <el-form-item prop="comment_content" hide-required-asterisk='true'>
+                                        <el-input 
+                                        type="textarea"
+                                        :autosize="{minRows: 6}"
+                                        placeholder="写下你的评论"
+                                        v-model="ruleForm.comment_content"
+                                        hide-required-asterisk='true'>
+                                        </el-input>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+                            <el-row>
+                                <el-col :span='8'>
+                                    <el-form-item prop='name'>
+                                            <el-input v-model="ruleForm.name" placeholder="请输入你的大名（必填）"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+                            <el-row>
+                                <el-col :span='9'>
+                                    <el-form-item prop='email'>
+                                            <el-input type='email' v-model="ruleForm.email" placeholder="请输入你的邮箱地址（必填， 不公开）"></el-input>
+                                    </el-form-item>                            
+                                </el-col>
+                            </el-row>
+                            <el-row>
+                                <el-col :span="8">
+                                    <el-button type="primary" @click='submitForm("ruleForm")'>评论</el-button>
+                                </el-col>
+                            </el-row>
+                    </el-form>
                 </el-main>
             </el-main>
             <el-aside width="200px">排行榜开发中</el-aside>
@@ -47,13 +49,37 @@
 <script>
     export default {
         data() {
+            //邮箱校验规则
+            let checkEmail = (rule, value, callback)=> {
+                let reg = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
+                if(reg.test(value)) {
+                    callback();
+                }else {
+                    callback(new Error("请输入正确的邮箱地址"))
+                }
+            }
             return {
                 article:'',
                 text:'',
                 tag:'',
-                liked:false,
                 name:'',
-                email:''
+                email:'',
+                ruleForm: {
+                    name:'',
+                    email:'',
+                    comment_content:''
+                },
+                rules: {
+                    comment_content:[
+                        {required:true, message:'评论内容不能为空', trigger: 'blur'}
+                    ],
+                    name: [
+                        {required:true, message:'大名不能为空', trigger: 'blur'}
+                    ],
+                    email: [
+                        {validator:checkEmail, trigger: 'blur'}
+                    ]                    
+                }
             }
         },
         created() {
@@ -74,20 +100,43 @@
                         let _res = res.data;
                         if (_res.cc === 0) {
                             this.article = _res.data[0];
-                            this.text = this.rmQuotation(this.article.content)
+                            this.text = this.article.content;
                             this.tag = `创建时间：${this.article.create_time} &nbsp 更新时间：${this.article.update_time}`
                         } else {
                             alert('获取文章失败！')
                         }
                     })
             },
-            rmQuotation (str) {
-                let _str = str.substring(0, str.length-1);
-                return _str
-            },
-            setLikeStatus() {
-                this.liked = !this.liked;
-                
+            //评论
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                        if(valid) {
+                            let content = {
+                                _id: this.$route.params.id,
+                                comment: {
+                                    email: this.ruleForm.email,
+                                    name: this.ruleForm.name,
+                                    comment_content: this.ruleForm.comment_content
+                                }
+                            }
+                            this.$http({
+                                url:'/api/comment',
+                                method: 'post',
+                                data: content
+                            })
+                                .then((res) => {
+                                    if(res.cc === 0) {
+                                        console.log('评论成功')
+                                    }else {
+                                        console.log('评论失败')
+                                    }
+                                })
+                        }
+                        else {
+                            console.log('aaaa')
+                            return false;
+                        }
+                })
             }
         }
     }

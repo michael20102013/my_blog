@@ -40,6 +40,13 @@
                                 </el-col>
                             </el-row>
                     </el-form>
+                    <el-row>
+                        <el-col :span='24' v-for="(item,index) in article.comment" :key="index" class="commentArea">
+                            <el-main class="comment-left commentCount">{{article.comment.length}} 条评论</el-main>
+                            <el-main class="comment-left">{{item.name}}：</el-main>
+                            <el-main class="comment-left">{{item.comment_content}}</el-main>
+                        </el-col>
+                    </el-row>
                 </el-main>
             </el-main>
             <el-aside width="200px">排行榜开发中</el-aside>
@@ -203,5 +210,17 @@
     }
     .comment {
         margin-top: 30px;
+    }
+    .commentArea {
+        margin-top: 30px;
+        border-top: 1px solid #f0f0f0;;
+        border-bottom: 1px solid #f0f0f0;;
+    }
+    .commentCount {
+        font-size: 24px;
+        font-weight: bold;
+    }
+    .comment-left {
+        padding-left: 0;
     }
 </style>

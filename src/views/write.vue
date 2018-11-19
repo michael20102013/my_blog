@@ -130,14 +130,14 @@
                 let content = {
                     page_view_time: [],
                     page_view_count: 0,
-                    like_person: [],
-                    like_count: 0,
                     content: "",
                     update_time: t.time(),
                     create_time: t.time(),
                     title:t.time(),
-                    "user_view": [],
-                    "comment": []
+                    user_view: [],
+                    user_view_count: 0,
+                    comment: [],
+                    comment_count: 0
                 }
                 this.$http({
                     url: '/api/edit/articles',

@@ -5,7 +5,7 @@
 				<el-container v-for="(item, index) in articles" :key = "index">
 					<el-container :class="index !==0 ? 'article-container' : false">
 						<el-header>
-							<span class="hover font-orange" @click="enterArticle(item._id, item.page_view_count)">{{item.title}}</span>
+							<span class="hover font-orange" @click="enterArticle(item._id, item.page_view_count, item.user_view_count)">{{item.title}}</span>
 						</el-header>
 						<el-main>
 							<div class="catalog">{{item.content | delHtmlTag}}
@@ -15,7 +15,8 @@
 							<el-row>
 								<el-col :span="9"><span>更新时间：{{item.update_time}}</span></el-col>
 								<el-col :span="5"><span>浏览量：{{item.page_view_count}}</span></el-col>
-								<el-col :span="5"><span>评论：{{item.page_view_count}}</span></el-col>
+								<el-col :span="5"><span>浏览人数：{{item.page_view_count}}</span></el-col>
+								<el-col :span="5"><span>评论数：{{item.comment_count}}</span></el-col>
 							</el-row>							
 						</el-footer>
 					</el-container>
@@ -67,8 +68,8 @@
 					})
 			},
 			//进入文章
-			async enterArticle(id, page_view_count) {
-				await this.setViewInfo(id, page_view_count);
+			enterArticle(id, page_view_count, user_view_count) {
+				this.setViewInfo(id, page_view_count, user_view_count);
 				let location = {
 					path: `/home/article`,
 					name: 'article',
@@ -88,16 +89,18 @@
 				}
 				this.getArticles(undefined, content)
 			},
-			//设置浏览信息
-			async setViewInfo(id, page_view_count) {
+			//设置pv和uv信息
+			setViewInfo(id, page_view_count, user_view_count) {
 				let t = new MYTime();
-				let count = parseInt(page_view_count) + 1;
+				let pv_count = parseInt(page_view_count) + 1;
+				let uv_count = parseInt(user_view_count) + 1;
 				let content = {
 					_id: id,
 					page_view_time:t.time(),
-					page_view_count: count
+					page_view_count: pv_count,
+					user_view_count: uv_count
 				}
-                await this.$http({
+                this.$http({
                     url: '/api/pageview/articles',
                     method: 'put',
                     data: content

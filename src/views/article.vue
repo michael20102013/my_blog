@@ -41,8 +41,8 @@
                             </el-row>
                     </el-form>
                     <el-row>
+                        <el-col :span="24" class="commentCount">{{article.comment_count}}条评论</el-col>
                         <el-col :span='24' v-for="(item,index) in article.comment" :key="index" class="commentArea">
-                            <el-main class="comment-left commentCount">{{article.comment.length}} 条评论</el-main>
                             <el-main class="comment-left">{{item.name}}：</el-main>
                             <el-main class="comment-left">{{item.comment_content}}</el-main>
                         </el-col>
@@ -66,7 +66,7 @@
                 }
             }
             return {
-                article:'',
+                article:{},
                 text:'',
                 tag:'',
                 name:'',
@@ -132,15 +132,15 @@
                                 data: content
                             })
                                 .then((res) => {
-                                    if(res.cc === 0) {
-                                        console.log('评论成功')
+                                    if(res.data.cc === 0) {
+                                       this.article = res.data.articles;
+                                       this.$refs[formName].resetFields();
                                     }else {
                                         console.log('评论失败')
                                     }
                                 })
                         }
                         else {
-                            console.log('aaaa')
                             return false;
                         }
                 })
@@ -217,6 +217,7 @@
         border-bottom: 1px solid #f0f0f0;;
     }
     .commentCount {
+        margin-top: 30px;
         font-size: 24px;
         font-weight: bold;
     }

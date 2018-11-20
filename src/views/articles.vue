@@ -15,7 +15,7 @@
 							<el-row>
 								<el-col :span="9"><span>更新时间：{{item.update_time}}</span></el-col>
 								<el-col :span="5"><span>浏览量：{{item.page_view_count}}</span></el-col>
-								<el-col :span="5"><span>浏览人数：{{item.page_view_count}}</span></el-col>
+								<el-col :span="5"><span>浏览人数：{{item.user_view_count}}</span></el-col>
 								<el-col :span="5"><span>评论数：{{item.comment_count}}</span></el-col>
 							</el-row>							
 						</el-footer>

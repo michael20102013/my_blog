@@ -1,14 +1,14 @@
 <template>
 	<div class="mainWrapper">
 		<el-container>
-			<el-main>
+			<el-main v-loading="loading">
 				<el-container v-for="(item, index) in articles" :key = "index">
 					<el-container :class="index !==0 ? 'article-container' : false">
 						<el-header>
 							<span class="hover font-orange" @click="enterArticle(item._id, item.page_view_count, item.user_view_count)">{{item.title}}</span>
 						</el-header>
 						<el-main>
-							<div class="catalog">{{item.content | delHtmlTag}}
+							<div class="catalog">{{item.html_content | delHtmlTag}}
 							</div>
 						</el-main>
 						<el-footer>
@@ -40,7 +40,8 @@
 				pagesize: 7,//每页的数据条数
 				currentPage: 1,//默认开始页面	
 				articles: [],
-				limit: 5
+				limit: 5,
+				loading: false
 			}
 		},
 		created() {
@@ -52,17 +53,26 @@
 		methods: {
 			//获取文章
 			getArticles(id, content) {
+				this.loading = true;
 				this.$http({
 					url: '/api/see/articles',
 					method: 'post',
+					Authorization: '',
 					data: content
 				}).
 					then((res) => {
+						this.loading = false;
 						let _res = res.data;
 						if (_res.cc === 0) {
 							this.articles = _res.data;
 							this.total = _res.data.length;
-						} else {
+						}else if(_res.cc === 2) {
+							window.localStorage.setItem('token_name','');
+							this.$store.commit('changeTologout');
+							this.$http.defaults.headers.common['Authorization'] = '';
+							this.getArticles(undefined, {limit: 5});
+						}
+						else {
 							alert('获取文章失败！')
 						}
 					})
@@ -95,10 +105,7 @@
 				let pv_count = parseInt(page_view_count) + 1;
 				let uv_count = parseInt(user_view_count) + 1;
 				let content = {
-					_id: id,
-					page_view_time:t.time(),
-					page_view_count: pv_count,
-					user_view_count: uv_count
+					_id: id
 				}
                 this.$http({
                     url: '/api/pageview/articles',

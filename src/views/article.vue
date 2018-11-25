@@ -1,7 +1,7 @@
 <template>
     <div class="mainWrapper">
         <el-container>
-            <el-main>
+            <el-main v-loading="loading">
                 <el-header id="article-title">{{article.title}}</el-header>
                 <el-header class="tag" v-html = "tag"></el-header>
                 <el-main class= "article-content" v-html="article.content"></el-main>
@@ -43,7 +43,7 @@
                     <el-row>
                         <el-col :span="24" class="commentCount">{{article.comment_count}}条评论</el-col>
                         <el-col :span='24' v-for="(item,index) in article.comment" :key="index" class="commentArea">
-                            <el-main class="comment-left">{{item.name}}：</el-main>
+                            <el-main class="comment-left comment_name">{{item.name}}：</el-main>
                             <el-main class="comment-left">{{item.comment_content}}</el-main>
                         </el-col>
                     </el-row>
@@ -71,6 +71,7 @@
                 tag:'',
                 name:'',
                 email:'',
+                loading:false,
                 ruleForm: {
                     name:'',
                     email:'',
@@ -94,6 +95,7 @@
         },
         methods: {
             getArticle() {
+                this.loading = true;
                 let id = this.$route.params.id;
                 let content = {
                     id: id
@@ -104,6 +106,7 @@
                     data: content
                 }).
                     then((res) => {
+                        this.loading = false;
                         let _res = res.data;
                         if (_res.cc === 0) {
                             this.article = _res.data[0];
@@ -223,5 +226,8 @@
     }
     .comment-left {
         padding-left: 0;
+    }
+    .comment_name {
+        font-size: 20px;
     }
 </style>

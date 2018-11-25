@@ -249,11 +249,7 @@
                             {
                                 "name": "pagespeed",
                                 "children": []
-                            },
-                            {
-                                "name": "网络/资源/协议/存储",
-                                "children": []
-                            } 
+                            }
                         ]
                     },
                     {

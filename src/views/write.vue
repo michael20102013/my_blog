@@ -2,7 +2,7 @@
     <div id="write">
         <el-row>
             <el-col :span="4" class="back">
-                <el-container>
+                <el-container  class="catalogList">
                     <el-header>
                         <!-- <el-button type="text"> -->
                         <span class="backToIndex">
@@ -26,7 +26,7 @@
                                 <el-col :span="20" class="artilce-title">
                                     <div @click="selected(index)">
                                         <div class="article-title-h1">{{article.title}}</div>
-                                        <div class="note-content" v-html = "article.content"></div>
+                                        <div class="note-content" v-html = "article.html_content"></div>
                                     </div>
                                 </el-col>
                                 <el-col :span="4">
@@ -40,8 +40,8 @@
                     </el-footer>
                 </el-container>
             </el-col>
-            <el-col :span="14" class="content">
-                <el-container>
+            <el-col :span="14" class="content hide">
+                <el-container class="conentWrapper">
                     <el-header class="content-title">
                         <input :placeholder="title" id="contentTitle" v-model="title"></input>
                         <el-button class="myfont fa fa-mail-forward small-font release" @click="releaseArticle"></el-button>
@@ -52,11 +52,25 @@
                     </el-main>
                 </el-container>
             </el-col>
+            <el-col :span="14" class="content">
+                    <el-header class="content-title">
+                        <input :placeholder="title" id="contentTitle" v-model="title"></input>
+                        <el-button class="myfont fa fa-mail-forward small-font release" @click="releaseArticle"></el-button>
+                    </el-header>
+                    <el-main class="content-content">
+                        <mavon-editor 
+                        v-model = 'editorContent'
+                        :ishljs="true"
+                        :code_style="code_style"
+                        :externalLink="externalLink"
+                        />
+                    </el-main>
+            </el-col>
         </el-row>
     </div>
 </template>
 <script>
-    import wangEditor from 'wangeditor';
+    // import wangEditor from 'wangeditor';
     const MYTime = require('../common/common').MYTime;
     export default {
         data() {
@@ -68,9 +82,39 @@
                     title: "JS 权威指南"
                 }],
                 editorContent: '',
+                editorHtml: '',
                 editingID: '',
                 defaultIndex: 0,
-                title:"123"
+                title:"123",
+                clearId: '',
+                code_style: 'solarized-dark',
+                externalLink: {
+                    markdown_css: function () {
+                        // 这是你的markdown css文件路径
+                        return '/markdown/github-markdown.min.css';
+                    },
+                    hljs_js: function () {
+                        // 这是你的hljs文件路径
+                        return '/highlightjs/highlight.min.js';
+                    },
+                    hljs_css: function (css) {
+                        // 这是你的代码高亮配色文件路径
+                        return '/highlightjs/styles/' + css + '.min.css';
+                        // return '/highlightjs/styles/' + 'atelier-dune-dark' + '.min.css';
+                    },
+                    hljs_lang: function (lang) {
+                        // 这是你的代码高亮语言解析路径
+                        return '/highlightjs/languages/' + lang + '.min.js';
+                    },
+                    katex_css: function () {
+                        // 这是你的katex配色方案路径路径
+                        return '/katex/katex.min.css';
+                    },
+                    katex_js: function () {
+                        // 这是你的katex.js路径
+                        return '/katex/katex.min.js';
+                    }
+                }
             }
         },
         created() {
@@ -79,6 +123,10 @@
         mounted() {
             this.getArticles();
             // this.initWangEditor();
+            jQuery('.content-content').on('keyup', () => {
+                this.saveArticle();
+                this.articles[this.defaultIndex].html_content = jQuery(".v-show-content").html();
+            })
         },
         updated(){
             // this.initWangEditor(this.editorContent);
@@ -87,9 +135,11 @@
             //更新文章(发布文章)
             releaseArticle() {
                 let t = new MYTime();
+                this.editorHtml =  jQuery(".v-show-content").html();
                 let content = {
                     _id: this.editingID,
-                    content: this.editorContent,
+                    md_content: this.editorContent,
+                    html_content: this.editorHtml,
                     update_time: t.time(),
                     title:this.title
                 }
@@ -109,6 +159,33 @@
                         }
                     )
             },
+            //实时保存文章
+            saveArticle() {
+                let t = new MYTime();
+                this.editorHtml = jQuery(".v-show-content").html();
+                let content = {
+                    _id: this.editingID,
+                    md_content: this.editorContent,
+                    html_content: this.editorHtml,
+                    update_time: t.time(),
+                    title:this.title
+                }
+                this.$http({
+                    url: '/api/edit/articles',
+                    method: 'put',
+                    data: content
+                })
+                    .then(
+                        (res) => {
+                            let _res = res.data;
+                            if (_res.cc === 0) {
+                                // this.getArticles();
+                            } else {
+                                alert('保存文章失败！')
+                            }
+                        }
+                    )
+            },            
             //选中文章样式
             select(index) {
                 return {
@@ -119,9 +196,9 @@
             //处理选中文章
             selected(index) {
                 this.defaultIndex = index;
-                this.editorContent = this.articles[index].content;
+                this.editorContent = this.articles[index].md_content;
                 this.editingID = this.articles[index]._id;
-                this.initWangEditor(this.editorContent);
+                // this.initWangEditor(this.editorContent);
                 this.title = this.articles[index].title;
             },
             //新建文章
@@ -130,7 +207,8 @@
                 let content = {
                     page_view_time: [],
                     page_view_count: 0,
-                    content: "",
+                    md_content: "",
+                    html_content:"",
                     update_time: t.time(),
                     create_time: t.time(),
                     title:t.time(),
@@ -160,20 +238,23 @@
                         if (_res.cc === 0) {
                             this.articles = _res.data;
                             this.editingID = this.articles[this.defaultIndex]._id;
-                            this.editorContent = this.articles[this.defaultIndex].content;
+                            this.editorContent = this.articles[this.defaultIndex].md_content;
                             this.title = this.articles[this.defaultIndex].title;
-                            this.initWangEditor(this.editorContent);
+                            // this.initWangEditor(this.editorContent);
                             this.recomputeEditCotent();
-                        } else {
+                        }else if (_res.cc === 401) {
+                            alert('未登录或者token到期，请重新登录');
+                            let location = '/home/articles';
+                            this.$router.push(location);
+                        }
+                        else {
                             alert('获取文章失败！')
                         }
                     })
             },
             //初始化文章内容
             initWangEditor(content = '') {
-                //let editor2 = new wangEditor('#editorMenu', '#writeArea');
                 let editor2 = new wangEditor('#writeArea');
-                // let editor2 = new wangEditor('#writeArea');
                 editor2.customConfig.onchange = (html) => {
                     this.editorContent = html;
                 }
@@ -183,16 +264,16 @@
             changeTitle(value){
                 this.title = value;
             },
-            saveArticle() {
-                console.log(123);
-            },
             //重新绘制文编区高度
             recomputeEditCotent() {
-                let h = jQuery("#write").css('height').split('px')[0] - 180;
-                jQuery('#writeArea').css('height', h + 'px');
-                jQuery(window).resize(function () {
-                    let h = jQuery("#write").css('height').split('px')[0] - 180;
-                    jQuery('#writeArea').css('height', h + 'px');
+                let h = jQuery("#write").css('height').split('px')[0] - 250;
+                jQuery(".w-e-text-container").css('height', h + 'px');
+                jQuery(window).on('resize', () => {
+                    clearTimeout(this.clearId)
+                    this.clearId = setTimeout(() => {
+                        let h = jQuery("#write").css('height').split('px')[0] - 250;
+                        jQuery(".w-e-text-container").css('height', h + 'px');
+                    }, 20)
                 })                
             },
             delHtmlTag(str) {
@@ -209,6 +290,9 @@
     }
 </script>
 <style lang="less" scoped>
+    .hide {
+        display: none;
+    }
     .el-icon-setting,
     .el-icon-circle-plus {
         cursor: pointer;
@@ -440,6 +524,18 @@
             text-overflow: ellipsis;
             white-space: nowrap;
             height: 50px;
+    }
+    .catalogList {
+        height: 100%;
+    }
+    .conentWrapper {
+        height: 100%;
+    }
+    .content-content {
+        height: 100%;
+    }
+    .markdown-body {
+        height: 90%;
     }
 </style>
 <style lang="less">

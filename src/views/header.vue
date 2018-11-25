@@ -49,8 +49,8 @@
 			return{
 				dialogFormVisible: false,
 				formLabelWidth: '25%',
-				loginUser:window.localStorage.getItem('token_name') ? JSON.parse(window.localStorage.getItem('token_name')).name : '登陆',
-				loginText:'登录',
+				loginUser:this.$store.state.username,
+				loginText:this.$store.state.islogin ? '登出' : '登录',
 				islogin:this.$store.state.islogin,
 				password:'',
 				userName:'',	
@@ -79,8 +79,23 @@
 			}
 		},
 		created(){
-			this.loginUser = this.islogin ? this.loginUser : '登陆';
 			this.selectIndex = location.href.split('#')[1] === '/home/article' ? '/home/articles' : location.href.split('#')[1];
+		},
+		computed: {
+			watchIsLogin() {
+				return this.$store.state.islogin;
+			},
+			watchUserName() {
+				return this.$store.state.username;
+			}
+		},
+		watch: {
+			watchIsLogin(curVal, oldVal) {
+				this.islogin = curVal;
+			}, 
+			watchUserName(curVal, oldVal) {
+				this.loginUser = curVal;
+			}
 		},
 		methods: {
 			dologin(){
@@ -136,6 +151,8 @@
 							token = 'Bearer ' + token;
 							this.addToken(token);
 							window.localStorage.setItem('token_name', JSON.stringify({token:token,name:this.userName}));
+							this.$http.defaults.headers.common['Authorization'] = token;
+							this.$store.commit('changeName', this.loginUser)
 						}
 						else{
 							this.dialogFormVisible = false;	
@@ -148,7 +165,7 @@
 			//改变登录状态
 			changeLoginStatus(){
 				this.dialogFormVisible  = true;
-				if(this.islogin){
+				if(this.$store.state.islogin){
 					this.loginText = '登出'
 				}else{
 					this.loginText = '登录'

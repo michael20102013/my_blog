@@ -13,7 +13,8 @@
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
     "build": "node build/build.js",
     "mock": "json-server --watch mock/db.json -p 3003",
-    "mockdev": "concurrently \"npm run dev\""
+    "mockdev": "concurrently \"npm run dev\"",
+    "analyz": "NODE_ENV=production npm_config_report=true npm run build"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -33,12 +34,9 @@
     "koa-router": "^7.4.0",
     "less": "^3.0.1",
     "less-loader": "^4.1.0",
-    "mongoose": "^5.1.5",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1",
-    "vuex-persistedstate": "^2.5.4",
-    "wangeditor": "^3.1.1"
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -95,7 +93,7 @@
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.5.2",
     "webpack": "^3.6.0",
-    "webpack-bundle-analyzer": "^2.9.0",
+    "webpack-bundle-analyzer": "^2.13.1",
     "webpack-dev-server": "^2.9.1",
     "webpack-merge": "^4.1.0"
   },

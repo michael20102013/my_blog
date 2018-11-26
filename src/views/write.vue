@@ -70,13 +70,10 @@
     </div>
 </template>
 <script>
-    // import wangEditor from 'wangeditor';
     const MYTime = require('../common/common').MYTime;
     export default {
         data() {
             return {
-                // ishFontShow:true,
-                // isArrowShow:false,
                 articles: [{
                     time: "2018-07-18",
                     title: "JS 权威指南"
@@ -91,7 +88,7 @@
             }
         },
         created() {
-            // this.getArticles();
+            // 
         },
         mounted() {
             this.getArticles();
@@ -102,7 +99,7 @@
             })
         },
         updated(){
-            // this.initWangEditor(this.editorContent);
+            // 
         },
         methods: {
             //更新文章(发布文章)
@@ -171,7 +168,6 @@
                 this.defaultIndex = index;
                 this.editorContent = this.articles[index].md_content;
                 this.editingID = this.articles[index]._id;
-                // this.initWangEditor(this.editorContent);
                 this.title = this.articles[index].title;
             },
             //新建文章
@@ -225,15 +221,6 @@
                         }
                     })
             },
-            //初始化文章内容
-            initWangEditor(content = '') {
-                let editor2 = new wangEditor('#writeArea');
-                editor2.customConfig.onchange = (html) => {
-                    this.editorContent = html;
-                }
-                editor2.create();
-                editor2.txt.html(content);
-            },
             changeTitle(value){
                 this.title = value;
             },
@@ -266,10 +253,6 @@
                 }).then((res) => {
                     let _res = res.data;
                     // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
-                    // $vm.$img2Url 详情见本页末尾
-                    console.log('url', _res.url);
-                    console.log('pos', pos);
-                    console.log('this.$refs.md', this.$refs.md);
                     this.$refs.md.$img2Url(pos, _res.url);
                 })
             },

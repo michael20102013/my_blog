@@ -66,7 +66,7 @@ const store = new Vuex.Store({
             state.username = '登录'
             Vue.prototype.$http.defaults.headers.common['Authorization'] = ''
         }
-        setTimeout(checkLogin, 2000)
+        // setTimeout(checkLogin, 2000)
 
     },
     //登出

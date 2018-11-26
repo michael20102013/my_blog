@@ -61,8 +61,8 @@
                         <mavon-editor 
                         v-model = 'editorContent'
                         :ishljs="true"
-                        :code_style="code_style"
-                        :externalLink="externalLink"
+                        :codeStyle="code_style"
+                        ref=md @imgAdd="$imgAdd" @imgDel="$imgDel"
                         />
                     </el-main>
             </el-col>
@@ -87,34 +87,7 @@
                 defaultIndex: 0,
                 title:"123",
                 clearId: '',
-                code_style: 'solarized-dark',
-                externalLink: {
-                    markdown_css: function () {
-                        // 这是你的markdown css文件路径
-                        return '/markdown/github-markdown.min.css';
-                    },
-                    hljs_js: function () {
-                        // 这是你的hljs文件路径
-                        return '/highlightjs/highlight.min.js';
-                    },
-                    hljs_css: function (css) {
-                        // 这是你的代码高亮配色文件路径
-                        return '/highlightjs/styles/' + css + '.min.css';
-                        // return '/highlightjs/styles/' + 'atelier-dune-dark' + '.min.css';
-                    },
-                    hljs_lang: function (lang) {
-                        // 这是你的代码高亮语言解析路径
-                        return '/highlightjs/languages/' + lang + '.min.js';
-                    },
-                    katex_css: function () {
-                        // 这是你的katex配色方案路径路径
-                        return '/katex/katex.min.css';
-                    },
-                    katex_js: function () {
-                        // 这是你的katex.js路径
-                        return '/katex/katex.min.js';
-                    }
-                }
+                code_style: 'atelier-dune-dark'
             }
         },
         created() {
@@ -279,7 +252,30 @@
             delHtmlTag(str) {
                 //去掉所有的html标记
                 return str.replace(/<[^>]+>/g, "");
-            }            
+            },
+            // 绑定@imgAdd event
+            $imgAdd(pos, $file) {
+                // 第一步.将图片上传到服务器.
+                var formdata = new FormData();
+                formdata.append('image', $file);
+                this.$http({
+                    url: '/api/edit/uploadimg',
+                    method: 'post',
+                    data: formdata,
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                }).then((res) => {
+                    let _res = res.data;
+                    // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
+                    // $vm.$img2Url 详情见本页末尾
+                    console.log('url', _res.url);
+                    console.log('pos', pos);
+                    console.log('this.$refs.md', this.$refs.md);
+                    this.$refs.md.$img2Url(pos, _res.url);
+                })
+            },
+            $imgDel(pos) {
+                delete this.img_file[pos];
+            }
         },
         computed: {
             

@@ -4,7 +4,7 @@
             <el-main v-loading="loading">
                 <el-header id="article-title">{{article.title}}</el-header>
                 <el-header class="tag" v-html = "tag"></el-header>
-                <el-main class= "article-content" v-html="article.content"></el-main>
+                <el-main class= "article-content" v-html="article.html_content"></el-main>
                 <el-main class="bottom">                 
                     <el-form :model='ruleForm' status-icon :rules="rules" ref='ruleForm' hide-required-asterisk='true'>
                             <el-row>

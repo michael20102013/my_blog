@@ -84,7 +84,8 @@
                 defaultIndex: 0,
                 title:"123",
                 clearId: '',
-                code_style: 'atelier-dune-dark'
+                code_style: 'atelier-dune-dark',
+                img_file: {}
             }
         },
         created() {
@@ -245,6 +246,7 @@
                 // 第一步.将图片上传到服务器.
                 var formdata = new FormData();
                 formdata.append('image', $file);
+                this.img_file[pos] = $file;
                 this.$http({
                     url: '/api/edit/uploadimg',
                     method: 'post',

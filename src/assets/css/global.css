@@ -17,6 +17,8 @@ hide {
 }
 a {
   text-decoration: none;
+  out-line: none;
+  color: #fff;
 }
 a:hover {
   color: #00C1DE;

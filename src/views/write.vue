@@ -21,7 +21,7 @@
                         <span>新建文章</span>
                     </el-header>
                     <el-main class="catalog-content">
-                        <div v-for="(article, index) in articles" :class="select(index)">
+                        <div v-for="(article, index) in articles" :class="select(index)"  :key="article._id">
                             <el-row>
                                 <el-col :span="20" class="artilce-title">
                                     <div @click="selected(index)">
@@ -30,7 +30,14 @@
                                     </div>
                                 </el-col>
                                 <el-col :span="4">
-                                    <i class="el-icon-setting"></i>
+                                        <el-dropdown trigger="click" @command="deleteArticle">
+                                            <span class="el-dropdown-link">
+                                                <i class="el-icon-setting el-icon--right"></i>
+                                            </span>
+                                            <el-dropdown-menu slot="dropdown">
+                                                <el-dropdown-item :command = "article._id">删除</el-dropdown-item>
+                                            </el-dropdown-menu>
+                                        </el-dropdown>
                                 </el-col>
                             </el-row>
                         </div>
@@ -40,19 +47,7 @@
                     </el-footer>
                 </el-container>
             </el-col>
-            <el-col :span="14" class="content hide">
-                <el-container class="conentWrapper">
-                    <el-header class="content-title">
-                        <input :placeholder="title" id="contentTitle" v-model="title"></input>
-                        <el-button class="myfont fa fa-mail-forward small-font release" @click="releaseArticle"></el-button>
-                    </el-header>
-                    <el-main class="content-content">
-                        <div id="editorMenu" style="font-size: 20px;" class="editorMenu"></div>  
-                        <div id="writeArea" class="writeArea" @onKeyUp = 'saveArticle()'></div>
-                    </el-main>
-                </el-container>
-            </el-col>
-            <el-col :span="14" class="content">
+            <el-col :span="14" :class="{content:true, hide: articles.length === 0}">
                     <el-header class="content-title">
                         <input :placeholder="title" id="contentTitle" v-model="title"></input>
                         <el-button class="myfont fa fa-mail-forward small-font release" @click="releaseArticle"></el-button>
@@ -96,7 +91,9 @@
             // this.initWangEditor();
             jQuery('.content-content').on('keyup', () => {
                 this.saveArticle();
-                this.articles[this.defaultIndex].html_content = jQuery(".v-show-content").html();
+                if(this.articles.length !== 0) {
+                    this.articles[this.defaultIndex].html_content = jQuery(".v-show-content").html()
+                }
             })
         },
         updated(){
@@ -156,7 +153,23 @@
                             }
                         }
                     )
-            },            
+            },
+            //删除文章
+            deleteArticle(id) {
+                let content = {_id: id}
+                this.$http({
+                    url: '/api/delete/article',
+                    method: 'post',
+                    data: content
+                }).then((res) => {
+                        if(res.data.cc === 0) {
+                            this.getArticles()
+                        }else {
+                            alert('删除文章失败')
+                        }
+                    }
+                )
+            },           
             //选中文章样式
             select(index) {
                 return {
@@ -207,10 +220,15 @@
                         let _res = res.data;
                         if (_res.cc === 0) {
                             this.articles = _res.data;
-                            this.editingID = this.articles[this.defaultIndex]._id;
-                            this.editorContent = this.articles[this.defaultIndex].md_content;
-                            this.title = this.articles[this.defaultIndex].title;
-                            // this.initWangEditor(this.editorContent);
+                            if(this.articles.length !== 0) {
+                                this.editingID = this.articles[this.defaultIndex]._id;
+                                this.editorContent = this.articles[this.defaultIndex].md_content;
+                                this.title = this.articles[this.defaultIndex].title;
+                            }else {
+                                this.editingID = '';
+                                this.editorContent = '';
+                                this.title = '';
+                            }
                             this.recomputeEditCotent();
                         }else if (_res.cc === 401) {
                             alert('未登录或者token到期，请重新登录');
@@ -276,6 +294,7 @@
     }
     .el-icon-setting,
     .el-icon-circle-plus {
+        color: #fff;
         cursor: pointer;
     }
 

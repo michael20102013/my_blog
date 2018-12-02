@@ -34,7 +34,9 @@ const store = new Vuex.Store({
   state: {
     isContentShow: true,
     islogin: false,
-    username: '登录'
+    username: '登录',
+    showSearch: false,
+    searchArticles: []
   },
   getters: {},
   mutations:{
@@ -81,6 +83,18 @@ const store = new Vuex.Store({
     //修改用户名
     changeName(state, name) {
       state.username = name;
+    },
+    //显示搜索结果
+    showSearch(state) {
+        state.showSearch = true;
+    },
+    //隐藏搜索结果
+    hideSearch(state) {
+        state.showSearch = false;
+    },
+    //显示搜索文章结果
+    showSearchArticles(state, articles) {
+        state.searchArticles = articles;
     }
   }
 });

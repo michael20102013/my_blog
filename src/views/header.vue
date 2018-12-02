@@ -12,8 +12,16 @@
 				<ul class="center">
 					<li v-for = "(item, index) in navs" :class="{active:dealLink(item.link) === selectIndex, 'menu-hover': true}" @click="setIndex(index, item.link)">{{item.name}}</li>
 					<li class="search">
-						<input type="text" id="search" value="" autocomplete="off" placeholder="搜索" class="search-input">
-						<a href="#">
+						<el-autocomplete
+						v-model="keyword"
+						:fetch-suggestions="querySearchAsync"
+						placeholder="请输入内容"
+						@select="handleSelect"
+						:trigger-on-focus="false"
+						class=""
+						id="search"
+						></el-autocomplete>
+						<a href="#" @click="showSearchResults">
 							<i class="search-icon fa fa-search"></i>
 						</a>
 					</li>
@@ -45,7 +53,7 @@
 	import Qs from 'qs';
 	import jwt from 'jsonwebtoken';
 	export default{
-		data(){
+		data() {
 			return{
 				dialogFormVisible: false,
 				formLabelWidth: '25%',
@@ -57,6 +65,9 @@
 				writeText:"写文章",
 				isActive:true,
 				selectIndex: '/home/articles',
+				keyword: '',
+				targetArr: [],
+				articles: [],
 				navs:[{
 					name:'首页',
 					link:'/article1'
@@ -78,8 +89,9 @@
 				}]
 			}
 		},
-		created(){
+		created() {
 			this.selectIndex = location.href.split('#')[1] === '/home/article' ? '/home/articles' : location.href.split('#')[1];
+			this.getArticles();			
 		},
 		computed: {
 			watchIsLogin() {
@@ -97,8 +109,11 @@
 				this.loginUser = curVal;
 			}
 		},
+		mounted() {
+
+		},
 		methods: {
-			dologin(){
+			dologin() {
 				let _data = {};
 				if(this.islogin){
 					this.$http({
@@ -163,7 +178,7 @@
 				}
 			},
 			//改变登录状态
-			changeLoginStatus(){
+			changeLoginStatus() {
 				this.dialogFormVisible  = true;
 				if(this.$store.state.islogin){
 					this.loginText = '登出'
@@ -172,7 +187,7 @@
 				}
 			},
 			//写文章
-			write(){
+			write() {
 				if(this.islogin === false){
 					alert("请先登录")
 				}else{
@@ -180,13 +195,16 @@
 					this.$router.push(location)
 				}
 			},
-			addToken(token){
+			addToken(token) {
 				this.$http.defaults.headers.common['Authorization'] = token;
 			},
 			setIndex(num, link) {
 				this.selectIndex = link;
 				let location = link;
 				this.$router.push(location);
+				if(link === '/home/articles') {
+					this.$store.commit('hideSearch');
+				}
 			},
 			dealLink(link) {
 				if(link === '/home/article') {
@@ -194,7 +212,70 @@
 				}else{
 					return link;
 				}
-			}
+			},
+			//查询搜索提示
+			querySearchAsync(queryString, cb) {
+				let articles = this.articles;
+				let results = queryString ? articles.filter(this.createFilter(queryString)) : articles;
+				let finalResults = [];
+				results.forEach((item, index) => {
+					let obj = {
+						value: item.title
+					}
+					Object.assign(item, obj);
+					finalResults.push(item)
+				});
+				//限制显示长度
+				let limit = finalResults.length < 5 ? finalResults.length : 5;
+				this.targetArr = [];
+				for(let i = 0; i < limit; i++) {
+					this.targetArr.push(finalResults[i])
+				}
+				// 调用 callback 返回建议列表的数据
+				cb(this.targetArr);
+			},
+			//文章关键字过滤
+			createFilter(queryString) {
+				return (article) => {
+					//内容或者标题匹配就返回
+					return (article.title.toLowerCase().indexOf(queryString.toLowerCase()) !== -1 || article.html_content.toLowerCase().indexOf(queryString.toLowerCase()) !== -1 );
+				};				
+			},
+			//选中提示搜索
+			handleSelect(item) {
+				this.showSearchResults()
+			},
+			//获取文章
+			getArticles() {
+				this.loading = true;
+				this.$http({
+					url: '/api/see/articles',
+					method: 'post',
+					Authorization: '',
+					data: {}
+				}).
+					then((res) => {
+						let _res = res.data;
+						if (_res.cc === 0) {
+							this.articles = _res.data;
+						}else if(_res.cc === 2) {
+							window.localStorage.setItem('token_name','');
+							this.$store.commit('changeTologout');
+							this.$http.defaults.headers.common['Authorization'] = '';
+						}
+						else {
+							alert('获取文章失败！')
+						}
+					})
+			},
+			//显示搜索结果
+			showSearchResults() {
+				this.$store.commit('showSearch');
+				this.$store.commit('showSearchArticles', this.targetArr);
+				this.selectIndex = '/home/articles';
+				let location = '/home/articles';
+				this.$router.push('/home/articles');
+			}			
 		}
 	}
 </script>
@@ -215,6 +296,7 @@
 		color: #303133;
 		height: 50px;
 		border-bottom: 1px #F4F4F4 solid;
+		min-width: 1280px;
 		#menu {
 			overflow: hidden;
 			width:1000px;
@@ -294,15 +376,11 @@
 		a {
 			position: absolute;
 			top: 9px;
-			right: 11px;
-			width: 32px;
-			height: 32px!important;
+			right: 37px;
 			line-height: normal!important;
 			padding: 0!important;
 			color: #969696!important;
 			text-align: center;
-			background-color:#ECECEC;
-			border-radius:40px;
 		}	
 	}
 	.search-input {
@@ -325,7 +403,6 @@
 		margin-top: 8px;
 		margin-left: -7px;
 		&:before {
-			background-color: #ECECEC;
 			opacity: 1;
 		}
 	}

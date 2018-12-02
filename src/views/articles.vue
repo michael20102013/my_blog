@@ -2,6 +2,11 @@
 	<div class="mainWrapper">
 		<el-container>
 			<el-main v-loading="loading">
+				<el-container v-if="showSearch">
+					<el-main>
+						<span class="searchTitle">搜索结果：</span><span class="searchContent">共{{articles.length}}条记录</span>
+					</el-main>
+				</el-container>
 				<el-container v-for="(item, index) in articles" :key = "index">
 					<el-container :class="index !==0 ? 'article-container' : false">
 						<el-header>
@@ -41,16 +46,43 @@
 				currentPage: 1,//默认开始页面	
 				articles: [],
 				limit: 5,
-				loading: false
+				loading: false,
+				showSearch: this.$store.state.showSearch
 			}
 		},
 		created() {
-			let content = {
-				limit: 5
+			this.init();
+		},
+		computed: {
+			watchIsSearchShow() {
+				return {
+					isSearchShow: this.$store.state.showSearch,
+					searchArticles: this.$store.state.searchArticles
+				}
 			}
-			this.getArticles(undefined, content);
+		},
+		watch: {
+			watchIsSearchShow(curVal, oldVal) {
+				this.showSearch = curVal.isSearchShow;
+				this.articles = curVal.searchArticles;
+				if(!this.showSearch) {
+					this.init();
+				}
+			}
 		},
 		methods: {
+			//初始化
+			init() {
+				if (!this.showSearch) {
+					let content = {
+						limit: 5
+					}
+					console.log('重新获取articles')
+					this.getArticles(undefined, content);
+				} else {
+					this.articles = this.$store.state.searchArticles
+				}
+			},			
 			//获取文章
 			getArticles(id, content) {
 				this.loading = true;
@@ -201,5 +233,14 @@
 	}
 	.font-center {
 		text-align: center;
+	}
+	.searchTitle {
+		font-size: 24px;
+		font-weight: bold;
+		color: #333
+	}
+	.searchContent {
+		font-size: 14px;
+		color: #FF4400
 	}
 </style>

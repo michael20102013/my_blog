@@ -494,7 +494,6 @@
         max-width: 275px;
         -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
-        display: -webkit-box;
         max-height:48px;
         font-size: 2em;
         -webkit-margin-before: 0.67em;

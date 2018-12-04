@@ -125,10 +125,22 @@
 						let _res = res.data
 						if(res.cc === 401){
 							this.islogin = false;
-							alert('登出失败')
+							setTimeout(() => {
+								this.$message({
+									message: '登出失败!',
+									type: 'error',
+									duration: 1000
+								});
+							}, 200)
 						}
 						else if(_res.cc === 0){
-							alert("登出成功");
+							setTimeout(() => {
+								this.$message({
+									message: '登出成功!',
+									type: 'success',
+									duration: 1000
+								});
+							}, 200)
 							this.islogin = false;
 							this.$store.commit('changeTologout');
 							this.dialogFormVisible = false;	
@@ -138,7 +150,13 @@
 						}
 						else{
 							this.dialogFormVisible = false;	
-							alert("登出失败");
+							setTimeout(() => {
+								this.$message({
+									message: '登出失败!',
+									type: 'error',
+									duration: 1000
+								});
+							}, 200)
 							this.islogin = false;
 						}
 
@@ -157,8 +175,14 @@
 						then((res)=>{
 						let _res = res.data;
 						if(_res.cc === 0){
-							let token = _res.token;							
-							alert("登录成功");
+							let token = _res.token;
+							setTimeout(() => {
+								this.$message({
+									message: '登录成功!',
+									type: 'success',
+									duration: 1000
+								});
+							}, 200)						
 							this.islogin = true;
 							this.$store.commit('changeTologin');
 							this.dialogFormVisible = false;	
@@ -171,7 +195,11 @@
 						}
 						else{
 							this.dialogFormVisible = false;	
-							alert("登录失败");
+							this.$message({
+                                message: '登录失败!',
+                                type: 'error',
+                                duration: 2000
+                            });
 						}
 
 					})
@@ -189,7 +217,11 @@
 			//写文章
 			write() {
 				if(this.islogin === false){
-					alert("请先登录")
+					this.$message({
+						message: '请先登录!',
+						type: 'warning',
+						duration: 2000
+					});					
 				}else{
 					let location = '/write'
 					this.$router.push(location)
@@ -264,7 +296,11 @@
 							this.$http.defaults.headers.common['Authorization'] = '';
 						}
 						else {
-							alert('获取文章失败！')
+							this.$message({
+                                message: '获取文章失败！!',
+                                type: 'error',
+                                duration: 2000
+                            });							
 						}
 					})
 			},

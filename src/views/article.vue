@@ -113,7 +113,11 @@
                             this.text = this.article.content;
                             this.tag = `创建时间：${this.article.create_time} &nbsp 更新时间：${this.article.update_time}`
                         } else {
-                            alert('获取文章失败！')
+                            this.$message({
+                                message: '获取文章失败！',
+                                type: 'error',
+                                duration: 2000
+                            });
                         }
                     })
             },

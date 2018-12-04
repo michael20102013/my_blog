@@ -77,7 +77,6 @@
 					let content = {
 						limit: 5
 					}
-					console.log('重新获取articles')
 					this.getArticles(undefined, content);
 				} else {
 					this.articles = this.$store.state.searchArticles

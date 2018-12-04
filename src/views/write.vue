@@ -25,8 +25,8 @@
                             <el-row>
                                 <el-col :span="20" class="artilce-title">
                                     <div @click="selected(index)">
-                                        <div class="article-title-h1">{{article.title}}</div>
-                                        <div class="note-content" v-html = "article.html_content"></div>
+                                        <div class="article-title-h1">{{article.title | delHtmlTag}}</div>
+                                        <div class="note-content">{{article.html_content | delHtmlTag}}</div>
                                     </div>
                                 </el-col>
                                 <el-col :span="4">
@@ -71,7 +71,8 @@
             return {
                 articles: [{
                     time: "2018-07-18",
-                    title: "JS 权威指南"
+                    title: "JS 权威指南",
+                    html_content: ''
                 }],
                 editorContent: '',
                 editorHtml: '',
@@ -122,7 +123,11 @@
                             if (_res.cc === 0) {
                                 this.getArticles();
                             } else {
-                                alert('获取文章失败！')
+                                this.$message({
+                                    message: '获取文章失败！',
+                                    type: 'error',
+                                    duration: 2000
+                                });
                             }
                         }
                     )
@@ -149,7 +154,11 @@
                             if (_res.cc === 0) {
                                 // this.getArticles();
                             } else {
-                                alert('保存文章失败！')
+                                this.$message({
+                                    message: '保存文章失败！',
+                                    type: 'error',
+                                    duration: 2000
+                                });
                             }
                         }
                     )
@@ -165,7 +174,11 @@
                         if(res.data.cc === 0) {
                             this.getArticles()
                         }else {
-                            alert('删除文章失败')
+                            this.$message({
+                                message: '删除文章失败!',
+                                type: 'error',
+                                duration: 2000
+                            });
                         }
                     }
                 )
@@ -231,12 +244,20 @@
                             }
                             this.recomputeEditCotent();
                         }else if (_res.cc === 401) {
-                            alert('未登录或者token到期，请重新登录');
+							this.$message({
+                                message: '未登录或者token到期，请重新登录!',
+                                type: 'error',
+                                duration: 2000
+                            });	                            
                             let location = '/home/articles';
                             this.$router.push(location);
                         }
                         else {
-                            alert('获取文章失败！')
+                            this.$message({
+                                message: '获取文章失败！',
+                                type: 'error',
+                                duration: 2000
+                            });
                         }
                     })
             },
@@ -284,7 +305,10 @@
             
         },
         filters: {
-
+            delHtmlTag(str) {
+                //去掉所有的html标记
+                return str.replace(/<[^>]+>/g, "");
+            }
         }
     }
 </script>
@@ -492,10 +516,11 @@
     .article-title-h1 {
         text-overflow: ellipsis;
         max-width: 275px;
+        white-space:nowrap;
         -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
         max-height:48px;
-        font-size: 2em;
+        font-size: 24px;
         -webkit-margin-before: 0.67em;
         -webkit-margin-after: 0.67em;
         -webkit-margin-start: 0px;

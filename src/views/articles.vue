@@ -52,15 +52,6 @@
 		},
 		created() {
             this.init();
-            let content = {
-                type:  navigator.userAgent
-            }
-            this.$http({
-                url: '/api/see/articles',
-                method: 'post',
-                Authorization: '',
-                data: content
-            })
 		},
 		computed: {
 			watchIsSearchShow() {

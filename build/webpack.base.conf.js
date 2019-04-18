@@ -95,11 +95,18 @@ module.exports = {
     tls: 'empty',
     child_process: 'empty'
   },
+  externals: {
+    jQuery: "jquery",
+    $: "jquery",
+    echarts: "echarts",
+    ElementUI: "element-ui",
+    Vue: "vue"
+  },
   // 增加一个plugins
-  plugins: [
-    new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery"
-    })
-  ],  
+//   plugins: [
+//     new webpack.ProvidePlugin({
+//       $: "jquery",
+//       jQuery: "jquery"
+//     })
+//   ],  
 }

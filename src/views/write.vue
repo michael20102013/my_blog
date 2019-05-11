@@ -121,6 +121,11 @@
                         (res) => {
                             let _res = res.data;
                             if (_res.cc === 0) {
+                                this.$message({
+                                    message: '发布文章成功！',
+                                    type: 'success',
+                                    duration: 2000                                    
+                                })
                                 this.getArticles();
                             } else {
                                 this.$message({
